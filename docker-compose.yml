@@ -1,4 +1,4 @@
-version: "3"
+version: "3.7"
 services:
 
 #Portainer - WebUI for Containers
@@ -12,8 +12,8 @@ services:
       - "9000:9000"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /e/docker/portainer/data:/data
-      - /e/docker/shared:/shared
+      - ${USERDIR}/docker/portainer/data:/data
+      - ${USERDIR}/docker/shared:/shared
     environment:
       - TZ=${TZ}
 
@@ -24,8 +24,8 @@ services:
     restart: always
     image: linuxserver/organizr:latest
     volumes:
-      - /e/docker/organizr:/config
-      - /e/docker/shared:/shared
+      - ${USERDIR}/docker/organizr:/config
+      - ${USERDIR}/docker/shared:/shared
     ports:
       - "80:80"
     environment:
@@ -49,11 +49,11 @@ services:
     hostname: sonarr
     container_name: sonarr
     volumes:
-      - /e/docker/sonarr:/config
-      - /d/downloads:/downloads
-      - /d/complete:/downloads/complete
-      - /d/My TV:/tv
-      - /e/docker/shared:/shared
+      - ${USERDIR}/docker/sonarr:/config
+      - ${DATADIR}/downloads:/downloads
+      - ${DATADIR}/complete:/downloads/complete
+      - ${DATADIR}/My TV:/tv
+      - ${USERDIR}/docker/shared:/shared
     ports:
       - "8989:8989"
     restart: always
@@ -68,11 +68,11 @@ services:
     hostname: radarr
     container_name: radarr
     volumes:
-      - /e/docker/radarr:/config
-      - /d/downloads:/downloads
-      - /d/complete:/downloads/complete
-      - /d/My Videos:/movies
-      - /e/docker/shared:/shared
+      - ${USERDIR}/docker/radarr:/config
+      - ${DATADIR}/downloads:/downloads
+      - ${DATADIR}/complete:/downloads/complete
+      - ${DATADIR}/My Videos:/movies
+      - ${USERDIR}/docker/shared:/shared
     ports:
       - "7878:7878"
     restart: always
@@ -87,11 +87,11 @@ services:
     hostname: lidarr
     container_name: lidarr
     volumes:
-      - /e/docker/lidarr:/config
-      - /d/downloads:/downloads
-      - /d/complete:/downloads/complete
-      - /d/My Music:/music
-      - /e/docker/shared:/shared
+      - ${USERDIR}/docker/lidarr:/config
+      - ${DATADIR}/downloads:/downloads
+      - ${DATADIR}/complete:/downloads/complete
+      - ${DATADIR}/My Music:/music
+      - ${USERDIR}/docker/shared:/shared
     ports:
       - "8686:8686"
     restart: always
@@ -106,9 +106,9 @@ services:
     hostname: nzbhydra
     container_name: nzbhydra
     volumes:
-      - /e/docker/nzbhydra:/config
-      - /d/downloads:/downloads
-      - /e/docker/shared:/shared
+      - ${USERDIR}/docker/nzbhydra:/config
+      - ${DATADIR}/downloads:/downloads
+      - ${USERDIR}/docker/shared:/shared
     ports:
       - "5076:5076"
     restart: always
@@ -123,13 +123,14 @@ services:
     hostname: nzbget
     container_name: nzbget
     volumes: 
-      - /e/docker/nzbget:/config
-      - /d/downloads:/downloads
-      - /d/complete:/downloads/complete
-      - /d/incomplete:/downloads/incomplete
-      - /d/queue:/downloads/queue
-      - /d/temp:/downloads/temp
-      - /e/docker/shared:/shared
+      - ${USERDIR}/docker/nzbget:/config
+      - ${DATADIR}/downloads:/downloads
+      - ${DATADIR}/complete:/downloads/complete
+      - ${DATADIR}/incomplete:/downloads/incomplete
+      - ${DATADIR}/queue:/downloads/queue
+      - ${DATADIR}/temp:/downloads/temp
+      - ${DATADIR}/scripts:/downloads/scripts
+      - ${USERDIR}/docker/shared:/shared
     ports:
       - "6789:6789"
     restart: always
@@ -144,7 +145,7 @@ services:
     hostname: ombi
     container_name: ombi
     volumes: 
-      - /e/docker/ombi:/config
+      - ${USERDIR}/docker/ombi:/config
     ports:
       - "3579:3579"
     restart: always
