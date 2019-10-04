@@ -1,0 +1,154 @@
+version: "3"
+services:
+
+#Portainer - WebUI for Containers
+  portainer:
+    image: portainer/portainer
+    hostname: portainer
+    container_name: portainer
+    restart: always
+    command: -H unix:///var/run/docker.sock
+    ports:
+      - "9000:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /e/docker/portainer/data:/data
+      - /e/docker/shared:/shared
+    environment:
+      - TZ=${TZ}
+
+# Organizer - Unified HTPC/Home Server Web Interface
+  organizr:
+    container_name: organizr
+    hostname: organizr
+    restart: always
+    image: linuxserver/organizr:latest
+    volumes:
+      - /e/docker/organizr:/config
+      - /e/docker/shared:/shared
+    ports:
+      - "80:80"
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+
+# Watchtower - Automatic Update of Containers/Apps
+#  watchtower:
+#    container_name: watchtower
+#    hostname: watchtower
+#    restart: always
+#    image: v2tec/watchtower
+#    volumes:
+#      - /var/run/docker.sock:/var/run/docker.sock
+#    command: --schedule "0 0 4 * * *" --cleanup
+
+# Sonarr – TV Show Download and Management
+  sonarr:
+    image: linuxserver/sonarr:preview
+    hostname: sonarr
+    container_name: sonarr
+    volumes:
+      - /e/docker/sonarr:/config
+      - /d/downloads:/downloads
+      - /d/complete:/downloads/complete
+      - /d/My TV:/tv
+      - /e/docker/shared:/shared
+    ports:
+      - "8989:8989"
+    restart: always
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+
+# Radarr – Movie Download and Management
+  radarr:
+    image: linuxserver/radarr:latest
+    hostname: radarr
+    container_name: radarr
+    volumes:
+      - /e/docker/radarr:/config
+      - /d/downloads:/downloads
+      - /d/complete:/downloads/complete
+      - /d/My Videos:/movies
+      - /e/docker/shared:/shared
+    ports:
+      - "7878:7878"
+    restart: always
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+
+# Lidarr – TV Show Download and Management
+  lidarr:
+    image: hotio/lidarr
+    hostname: lidarr
+    container_name: lidarr
+    volumes:
+      - /e/docker/lidarr:/config
+      - /d/downloads:/downloads
+      - /d/complete:/downloads/complete
+      - /d/My Music:/music
+      - /e/docker/shared:/shared
+    ports:
+      - "8686:8686"
+    restart: always
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+
+# NZBHydra2 - Indexer 
+  nzbhydra2:
+    image: hotio/nzbhydra2:latest
+    hostname: nzbhydra
+    container_name: nzbhydra
+    volumes:
+      - /e/docker/nzbhydra:/config
+      - /d/downloads:/downloads
+      - /e/docker/shared:/shared
+    ports:
+      - "5076:5076"
+    restart: always
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+
+# NZBGet - Downloader      
+  nzbget:
+    image: linuxserver/nzbget:latest
+    hostname: nzbget
+    container_name: nzbget
+    volumes: 
+      - /e/docker/nzbget:/config
+      - /d/downloads:/downloads
+      - /d/complete:/downloads/complete
+      - /d/incomplete:/downloads/incomplete
+      - /d/queue:/downloads/queue
+      - /d/temp:/downloads/temp
+      - /e/docker/shared:/shared
+    ports:
+      - "6789:6789"
+    restart: always
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+
+# Ombi - Show Requestor      
+  ombi:
+    image: linuxserver/ombi:latest
+    hostname: ombi
+    container_name: ombi
+    volumes: 
+      - /e/docker/ombi:/config
+    ports:
+      - "3579:3579"
+    restart: always
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
