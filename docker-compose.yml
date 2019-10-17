@@ -99,7 +99,7 @@ services:
       - ${DOCKERDIR}/docker/transmission-vpn:/data
       - ${DOCKERDIR}/docker/shared:/shared
       - ${DOCKERDIR}/docker/downloads:/data/watch
-      - ${DOCKERDIR}/docker/downloads/:/data/completed
+      - ${DOCKERDIR}/docker/downloads/completed:/data/completed
       - ${DOCKERDIR}/docker/downloads/intermediate:/data/incomplete
     environment:
       - OPENVPN_PROVIDER=USENETSERVER
@@ -135,7 +135,7 @@ services:
       - "traefik.frontend.headers.SSLHost=scottmccollough.net"
       - "traefik.frontend.headers.STSIncludeSubdomains=true"
       - "traefik.frontend.headers.STSPreload=true"
-      - "traefik.frontend.headers.frameDeny=false"      
+      - "traefik.frontend.headers.frameDeny=false"   
 
 # Sonarr – TV Show Download and Management
   sonarr:
@@ -314,7 +314,7 @@ services:
     volumes: 
       - ${DOCKERDIR}/docker/nzbget:/config
       - ${DOCKERDIR}/docker/downloads:/downloads
-      - ${DOCKERDIR}/docker/downloads/incompleted/:/incompleted-downloads
+      - ${DOCKERDIR}/docker/downloads/incompleted:/incompleted-downloads
       - ${DOCKERDIR}/docker/shared:/shared
     environment:
       - PUID=${PUID}
@@ -420,6 +420,22 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - letsencrypt:/etc/traefik
       - ${DOCKERDIR}/docker/shared:/shared
+        
+  vault:
+    image: vault
+    container_name: vault
+    ports:
+      - "8200:8200"
+    restart: always
+    volumes:
+      - ${DOCKERDIR}/docker/vault/config:/vault/config
+      - ${DOCKERDIR}/docker/vault/logs:/vault/logs
+      - ${DOCKERDIR}/docker/vault/file:/vault/file/
+      - ${DOCKERDIR}/docker/shared:/shared
+
+    cap_add:
+      - IPC_LOCK
+    entrypoint: vault server -config=/vault/config/vault.json
 
 networks:
   traefik_proxy:
