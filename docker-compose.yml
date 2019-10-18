@@ -1,157 +1,22 @@
 version: '3.7'
 services:
 
-#Portainer - WebUI for Containers
-  portainer:
-    image: portainer/portainer
-    container_name: portainer
-    hostname: portainer
-    restart: always
-    command: -H unix:///var/run/docker.sock
+#ddclient - keep ddns updated
+  ddclient:
+    image: linuxserver/ddclient
+    hostname: ddclient
+    container_name: ddclient
+    restart: unless-stopped  
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ${DOCKERDIR}/docker/portainer/data:/data
-      - ${DOCKERDIR}/docker/shared:/shared
-    environment:
-      - TZ=${TZ}
-    networks:
-      - default
-      - traefik_proxy
-    labels:
-      - "traefik.enable=true"
-      - "traefik.backend=portainer"
-      - "traefik.frontend.rule=Host:portainer.${HOSTNAME}"  
-      - "traefik.port=9000"
-      - "traefik.docker.network=traefik_proxy"
-      - "traefik.frontend.headers.SSLRedirect=true"
-      - "traefik.frontend.headers.STSSeconds=315360000"
-      - "traefik.frontend.headers.browserXSSFilter=true"
-      - "traefik.frontend.headers.contentTypeNosniff=true"
-      - "traefik.frontend.headers.forceSTSHeader=true"
-      - "traefik.frontend.headers.SSLHost=scottmccollough.net"
-      - "traefik.frontend.headers.STSIncludeSubdomains=true"
-      - "traefik.frontend.headers.STSPreload=true"
-      - "traefik.frontend.headers.frameDeny=false"      
-
-  ouroboros:
-    image: pyouroboros/ouroboros
-    container_name: ouroboros
-    hostname: ouroboros
-    restart: always
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ${DOCKERDIR}/docker/ouroboros/data:/data
-      - ${DOCKERDIR}/docker/shared:/shared
-    environment:
-      - CLEANUP=true
-      - INTERVAL=300
-      - LOG_LEVEL=info
-      - SELF_UPDATE=true
-      - IGNORE=mongo influxdb postgres mariadb
-      - TZ=${TZ}
-
-# Organizer - Unified HTPC/Home Server Web Interface
-  organizr:
-    image: linuxserver/organizr:latest
-    container_name: organizr
-    hostname: organizr
-    restart: always
-    volumes:
-      - ${DOCKERDIR}/docker/organizr:/config
-      - ${DOCKERDIR}/docker/shared:/shared
-#    ports:
-#      - "9983:9983"
+      - ${DOCKERDIR}/docker/ddclient:/config
+      - shared:/shared
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
-    networks:
-      - traefik_proxy
-    labels:
-      - "traefik.enable=true"
-      - "traefik.backend=organizr"
-      - "traefik.frontend.rule=Host:organizr.${HOSTNAME}"  
-      - "traefik.port=80"
-      - "traefik.docker.network=traefik_proxy"
-      - "traefik.frontend.headers.SSLRedirect=true"
-      - "traefik.frontend.headers.STSSeconds=315360000"
-      - "traefik.frontend.headers.browserXSSFilter=true"
-      - "traefik.frontend.headers.contentTypeNosniff=true"
-      - "traefik.frontend.headers.forceSTSHeader=true"
-      - "traefik.frontend.headers.SSLHost=scottmccollough.net"
-      - "traefik.frontend.headers.STSIncludeSubdomains=true"
-      - "traefik.frontend.headers.STSPreload=true"
-      - "traefik.frontend.headers.frameDeny=true"
 
-# Sonarr – TV Show Download and Management
-  sonarr:
-    image: linuxserver/sonarr:preview
-    container_name: sonarr
-    hostname: sonarr
-    restart: always
-    volumes:
-      - ${DOCKERDIR}/docker/sonarr:/config
-      - ${DOCKERDIR}/docker/downloads:/downloads
-      - ${DATADIR}/My TV:/tv
-      - ${DOCKERDIR}/docker/shared:/shared
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-    networks:
-      - default
-      - traefik_proxy
-    labels:
-      - "traefik.enable=true"
-      - "traefik.backend=sonarr"
-      - "traefik.frontend.rule=Host:sonarr.${HOSTNAME}"
-      - "traefik.port=8989"
-      - "traefik.docker.network=traefik_proxy"
-      - "traefik.frontend.headers.SSLRedirect=true"
-      - "traefik.frontend.headers.STSSeconds=315360000"
-      - "traefik.frontend.headers.browserXSSFilter=true"
-      - "traefik.frontend.headers.contentTypeNosniff=true"
-      - "traefik.frontend.headers.forceSTSHeader=true"
-      - "traefik.frontend.headers.SSLHost=scottmccollough.net"
-      - "traefik.frontend.headers.STSIncludeSubdomains=true"
-      - "traefik.frontend.headers.STSPreload=true"
-      - "traefik.frontend.headers.frameDeny=false"      
 
-# Radarr – Movie Download and Management
-  radarr:
-    image: linuxserver/radarr:latest
-    container_name: radarr
-    hostname: radarr
-    restart: always
-    volumes:
-      - ${DOCKERDIR}/docker/radarr:/config
-      - ${DOCKERDIR}/docker/downloads:/downloads
-      - ${DATADIR}/My Videos:/movies
-      - ${DOCKERDIR}/docker/shared:/shared
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-    networks:
-      - default
-      - traefik_proxy
-    labels:
-      - "traefik.enable=true"
-      - "traefik.backend=radarr"
-      - "traefik.frontend.rule=Host:radarr.${HOSTNAME}"
-      - "traefik.port=7878"
-      - "traefik.docker.network=traefik_proxy"
-      - "traefik.frontend.headers.SSLRedirect=true"
-      - "traefik.frontend.headers.STSSeconds=315360000"
-      - "traefik.frontend.headers.browserXSSFilter=true"
-      - "traefik.frontend.headers.contentTypeNosniff=true"
-      - "traefik.frontend.headers.forceSTSHeader=true"
-      - "traefik.frontend.headers.SSLHost=scottmccollough.net"
-      - "traefik.frontend.headers.STSIncludeSubdomains=true"
-      - "traefik.frontend.headers.STSPreload=true"
-      - "traefik.frontend.headers.frameDeny=false"      
-
-# Lidarr – TV Show Download and Management
+#Lidarr – TV Show Download and Management
   lidarr:
     image: hotio/lidarr
     container_name: lidarr
@@ -161,8 +26,8 @@ services:
       - ${DOCKERDIR}/docker/lidarr:/config
       - ${DOCKERDIR}/docker/downloads:/downloads
       - ${DATADIR}/My Music:/music
-      - ${DATADIR}/docker/downloads/completed:/data/completed/music
-      - ${DOCKERDIR}/docker/shared:/shared
+      - ${DOCKERDIR}/docker/downloads/completed:/data/completed/music
+      - shared:/shared
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -186,40 +51,7 @@ services:
       - "traefik.frontend.headers.STSPreload=true"
       - "traefik.frontend.headers.frameDeny=false"      
 
-# NZBHydra2 - Indexer 
-  nzbhydra2:
-    image: hotio/nzbhydra2:latest
-    container_name: nzbhydra
-    hostname: nzbhydra
-    restart: always
-    volumes:
-      - ${DOCKERDIR}/docker/nzbhydra:/config
-      - ${DOCKERDIR}/docker/downloads:/downloads
-      - ${DOCKERDIR}/docker/shared:/shared
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-    networks:
-      - default
-      - traefik_proxy
-    labels:
-      - "traefik.enable=true"
-      - "traefik.backend=nzbhydra"
-      - "traefik.frontend.rule=Host:nzbhydra.${HOSTNAME}"
-      - "traefik.port=5076"
-      - "traefik.docker.network=traefik_proxy"
-      - "traefik.frontend.headers.SSLRedirect=true"
-      - "traefik.frontend.headers.STSSeconds=315360000"
-      - "traefik.frontend.headers.browserXSSFilter=true"
-      - "traefik.frontend.headers.contentTypeNosniff=true"
-      - "traefik.frontend.headers.forceSTSHeader=true"
-      - "traefik.frontend.headers.SSLHost=example.com"
-      - "traefik.frontend.headers.STSIncludeSubdomains=true"
-      - "traefik.frontend.headers.STSPreload=true"
-      - "traefik.frontend.headers.frameDeny=false"
-
-# NZBGet - Downloader      
+#NZBGet - Downloader      
   nzbget:
     image: linuxserver/nzbget:latest
     container_name: nzbget
@@ -229,7 +61,7 @@ services:
       - ${DOCKERDIR}/docker/nzbget:/config
       - ${DOCKERDIR}/docker/downloads:/downloads
       - ${DOCKERDIR}/docker/downloads/incompleted:/incompleted-downloads
-      - ${DOCKERDIR}/docker/shared:/shared
+      - shared:/shared
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -253,7 +85,40 @@ services:
       - "traefik.frontend.headers.STSPreload=true"
       - "traefik.frontend.headers.frameDeny=false"
 
-# Ombi - Show Requestor      
+#NZBHydra2 - Indexer 
+  nzbhydra2:
+    image: hotio/nzbhydra2:latest
+    container_name: nzbhydra
+    hostname: nzbhydra
+    restart: always
+    volumes:
+      - ${DOCKERDIR}/docker/nzbhydra:/config
+      - ${DOCKERDIR}/docker/downloads:/downloads
+      - shared:/shared
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    networks:
+      - default
+      - traefik_proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=nzbhydra"
+      - "traefik.frontend.rule=Host:nzbhydra.${HOSTNAME}"
+      - "traefik.port=5076"
+      - "traefik.docker.network=traefik_proxy"
+      - "traefik.frontend.headers.SSLRedirect=true"
+      - "traefik.frontend.headers.STSSeconds=315360000"
+      - "traefik.frontend.headers.browserXSSFilter=true"
+      - "traefik.frontend.headers.contentTypeNosniff=true"
+      - "traefik.frontend.headers.forceSTSHeader=true"
+      - "traefik.frontend.headers.SSLHost=example.com"
+      - "traefik.frontend.headers.STSIncludeSubdomains=true"
+      - "traefik.frontend.headers.STSPreload=true"
+      - "traefik.frontend.headers.frameDeny=false"
+
+#Ombi - Show Requestor      
   ombi:
     image: linuxserver/ombi:latest
     hostname: ombi
@@ -261,7 +126,7 @@ services:
     restart: always
     volumes: 
       - ${DOCKERDIR}/docker/ombi:/config
-      - ${DOCKERDIR}/docker/shared:/shared
+      - shared:/shared
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -285,19 +150,156 @@ services:
       - "traefik.frontend.headers.STSPreload=true"
       - "traefik.frontend.headers.frameDeny=false"      
 
-  ddclient:
-    image: linuxserver/ddclient
-    hostname: ddclient
-    container_name: ddclient
-    restart: unless-stopped  
+#Organizer - Unified HTPC/Home Server Web Interface
+  organizr:
+    image: linuxserver/organizr:latest
+    container_name: organizr
+    hostname: organizr
+    restart: always
     volumes:
-      - ${DOCKERDIR}/docker/ddclient:/config
-      - ${DOCKERDIR}/docker/shared:/shared
+      - ${DOCKERDIR}/docker/organizr:/config
+      - shared:/shared
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
+    networks:
+      - traefik_proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=organizr"
+      - "traefik.frontend.rule=Host:organizr.${HOSTNAME}"  
+      - "traefik.port=80"
+      - "traefik.docker.network=traefik_proxy"
+      - "traefik.frontend.headers.SSLRedirect=true"
+      - "traefik.frontend.headers.STSSeconds=315360000"
+      - "traefik.frontend.headers.browserXSSFilter=true"
+      - "traefik.frontend.headers.contentTypeNosniff=true"
+      - "traefik.frontend.headers.forceSTSHeader=true"
+      - "traefik.frontend.headers.SSLHost=scottmccollough.net"
+      - "traefik.frontend.headers.STSIncludeSubdomains=true"
+      - "traefik.frontend.headers.STSPreload=true"
+      - "traefik.frontend.headers.frameDeny=true"
 
+#Ouroboros - keep containers updated      
+  ouroboros:
+    image: pyouroboros/ouroboros
+    container_name: ouroboros
+    hostname: ouroboros
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${DOCKERDIR}/docker/ouroboros/data:/data
+      - shared:/shared
+    environment:
+      - CLEANUP=true
+      - INTERVAL=300
+      - LOG_LEVEL=info
+      - SELF_UPDATE=true
+      - IGNORE=mongo influxdb postgres mariadb
+      - TZ=${TZ}
+
+#Portainer - WebUI for Containers
+  portainer:
+    image: portainer/portainer
+    container_name: portainer
+    hostname: portainer
+    restart: always
+    command: -H unix:///var/run/docker.sock
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${DOCKERDIR}/docker/portainer/data:/data
+      - shared:/shared
+    environment:
+      - TZ=${TZ}
+    networks:
+      - default
+      - traefik_proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=portainer"
+      - "traefik.frontend.rule=Host:portainer.${HOSTNAME}"  
+      - "traefik.port=9000"
+      - "traefik.docker.network=traefik_proxy"
+      - "traefik.frontend.headers.SSLRedirect=true"
+      - "traefik.frontend.headers.STSSeconds=315360000"
+      - "traefik.frontend.headers.browserXSSFilter=true"
+      - "traefik.frontend.headers.contentTypeNosniff=true"
+      - "traefik.frontend.headers.forceSTSHeader=true"
+      - "traefik.frontend.headers.SSLHost=scottmccollough.net"
+      - "traefik.frontend.headers.STSIncludeSubdomains=true"
+      - "traefik.frontend.headers.STSPreload=true"
+      - "traefik.frontend.headers.frameDeny=false"      
+
+#Radarr – Movie Download and Management
+  radarr:
+    image: linuxserver/radarr:latest
+    container_name: radarr
+    hostname: radarr
+    restart: always
+    volumes:
+      - ${DOCKERDIR}/docker/radarr:/config
+      - ${DOCKERDIR}/docker/downloads:/downloads
+      - ${DATADIR}/My Videos:/movies
+      - shared:/shared
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    networks:
+      - default
+      - traefik_proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=radarr"
+      - "traefik.frontend.rule=Host:radarr.${HOSTNAME}"
+      - "traefik.port=7878"
+      - "traefik.docker.network=traefik_proxy"
+      - "traefik.frontend.headers.SSLRedirect=true"
+      - "traefik.frontend.headers.STSSeconds=315360000"
+      - "traefik.frontend.headers.browserXSSFilter=true"
+      - "traefik.frontend.headers.contentTypeNosniff=true"
+      - "traefik.frontend.headers.forceSTSHeader=true"
+      - "traefik.frontend.headers.SSLHost=scottmccollough.net"
+      - "traefik.frontend.headers.STSIncludeSubdomains=true"
+      - "traefik.frontend.headers.STSPreload=true"
+      - "traefik.frontend.headers.frameDeny=false"      
+
+#Sonarr – TV Show Download and Management
+  sonarr:
+    image: linuxserver/sonarr:preview
+    container_name: sonarr
+    hostname: sonarr
+    restart: always
+    volumes:
+      - ${DOCKERDIR}/docker/sonarr:/config
+      - ${DOCKERDIR}/docker/downloads:/downloads
+      - ${DATADIR}/My TV:/tv
+      - shared:/shared
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    networks:
+      - default
+      - traefik_proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=sonarr"
+      - "traefik.frontend.rule=Host:sonarr.${HOSTNAME}"
+      - "traefik.port=8989"
+      - "traefik.docker.network=traefik_proxy"
+      - "traefik.frontend.headers.SSLRedirect=true"
+      - "traefik.frontend.headers.STSSeconds=315360000"
+      - "traefik.frontend.headers.browserXSSFilter=true"
+      - "traefik.frontend.headers.contentTypeNosniff=true"
+      - "traefik.frontend.headers.forceSTSHeader=true"
+      - "traefik.frontend.headers.SSLHost=scottmccollough.net"
+      - "traefik.frontend.headers.STSIncludeSubdomains=true"
+      - "traefik.frontend.headers.STSPreload=true"
+      - "traefik.frontend.headers.frameDeny=false"      
+
+#Traefik - reverse proxy for containers      
   traefik:
     hostname: traefik
     image: traefik:v1.7.18-alpine
@@ -317,7 +319,6 @@ services:
       - "traefik.enable=true"
       - "traefik.backend=traefik"
       - "traefik.frontend.rule=Host:traefik.${HOSTNAME}"  
-#      - "traefik.frontend.rule=Host:${DOMAINNAME}; PathPrefixStrip: /traefik"
       - "traefik.port=8080"
       - "traefik.docker.network=traefik_proxy"
       - "traefik.frontend.headers.SSLRedirect=true"
@@ -333,8 +334,9 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - letsencrypt:/etc/traefik
-      - ${DOCKERDIR}/docker/shared:/shared
-        
+      - shared:/shared
+
+#Vault = secret storage      
   vault:
     image: vault
     container_name: vault
@@ -345,7 +347,7 @@ services:
       - ${DOCKERDIR}/docker/vault/config:/vault/config
       - ${DOCKERDIR}/docker/vault/logs:/vault/logs
       - ${DOCKERDIR}/docker/vault/file:/vault/file/
-      - ${DOCKERDIR}/docker/shared:/shared
+      - shared:/shared
 
     cap_add:
       - IPC_LOCK
@@ -359,4 +361,5 @@ networks:
     driver: bridge      
 
 volumes:
-  letsencrypt:    
+  letsencrypt:
+  shared:
