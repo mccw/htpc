@@ -15,22 +15,78 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
 
+#MariaDb
+  # db:
+  #   image: mariadb
+  #   hostname: mariadb
+  #   container_name: mariadb
+  #   command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+  #   restart: always
+  #   volumes:
+  #     - db:/var/lib/mysql
+  #   environment:
+  #     - TZ=${TZ}
+  #     - PUID=${PUID}
+  #     - PGID=${PGID}
+  #     - MYSQL_ROOT_PASSWORD=mariadb
+  #     - MYSQL_PASSWORD=mariadb
+  #     - MYSQL_DATABASE=nextcloud
+  #     - MYSQL_USER=nextcloud
+  #   networks:
+  #     - nextcloud_network
+  #     - default
+
+#NextCloud
+  # nextcloud:
+  #   image: nextcloud
+  #   hostname: nextcloud
+  #   container_name: nextcloud
+  #   depends_on:
+  #     - db
+  #   restart: always
+  #   volumes:
+  #     - ${DOCKERDIR}/docker/nextcloud:/config
+  #     - nextcloud:/var/www/html
+  #     - shared:/shared
+  #   environment:
+  #     - PUID=${PUID}
+  #     - PGID=${PGID}
+  #     - TZ=${TZ}
+  #   networks:
+  #     - nextcloud_network
+  #     - traefik_proxy
+  #     - default
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.backend=cloud"
+  #     - "traefik.frontend.rule=Host:cloud.${HOSTNAME}"
+  #     - "traefik.port=80"
+  #     - "traefik.docker.network=traefik_proxy"
+  #     - "traefik.frontend.headers.SSLRedirect=true"
+  #     - "traefik.frontend.headers.STSSeconds=315360000"
+  #     - "traefik.frontend.headers.browserXSSFilter=true"
+  #     - "traefik.frontend.headers.contentTypeNosniff=true"
+  #     - "traefik.frontend.headers.forceSTSHeader=true"
+  #     - "traefik.frontend.headers.SSLHost=example.com"
+  #     - "traefik.frontend.headers.STSIncludeSubdomains=true"
+  #     - "traefik.frontend.headers.STSPreload=true"
+  #     - "traefik.frontend.headers.frameDeny=false"
+
 #NZBHydra2 - Indexer 
   nzbhydra2:
-    image: hotio/nzbhydra2:latest
-    container_name: nzbhydra
+    image: linuxserver/hydra2:latest
     hostname: nzbhydra
+    container_name: nzbhydra
     restart: always
     volumes:
       - ${DOCKERDIR}/docker/nzbhydra:/config
-      - downloads:/downloads
+      - ${DOCKERDIR}/downloads:/downloads
       - shared:/shared
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
     networks:
-      - default
       - traefik_proxy
     labels:
       - "traefik.enable=true"
@@ -62,7 +118,6 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     networks:
-      - default
       - traefik_proxy
     labels:
       - "traefik.enable=true"
@@ -125,7 +180,6 @@ services:
     environment:
       - TZ=${TZ}
     networks:
-      - default
       - traefik_proxy
     labels:
       - "traefik.enable=true"
@@ -151,7 +205,7 @@ services:
     restart: always
     volumes:
       - ${DOCKERDIR}/docker/radarr:/config
-      - downloads:/downloads
+      - ${DOCKERDIR}/downloads:/downloads
       - ${DATADIR}/My Videos:/movies
       - shared:/shared
     environment:
@@ -159,7 +213,6 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     networks:
-      - default
       - traefik_proxy
     labels:
       - "traefik.enable=true"
@@ -183,7 +236,7 @@ services:
     container_name: "sabnzbd"
     volumes:
       - ${DOCKERDIR}/docker/sabnzbd:/config
-      - downloads:/downloads:rw
+      - ${DOCKERDIR}/downloads:/downloads
       - shared:/shared
     restart: always
     environment:
@@ -191,7 +244,6 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     networks:
-      - default
       - traefik_proxy
     labels:
       - "traefik.enable=true"
@@ -217,7 +269,7 @@ services:
     restart: always
     volumes:
       - ${DOCKERDIR}/docker/sonarr:/config
-      - downloads:/downloads
+      - ${DOCKERDIR}/downloads:/downloads
       - ${DATADIR}/My TV:/tv
       - shared:/shared
     environment:
@@ -225,7 +277,6 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     networks:
-      - default
       - traefik_proxy
     labels:
       - "traefik.enable=true"
@@ -274,7 +325,7 @@ services:
       - "traefik.frontend.headers.STSIncludeSubdomains=true"
       - "traefik.frontend.headers.STSPreload=true"
       - "traefik.frontend.headers.frameDeny=false"
-      - "traefik.frontend.auth.basic.users=admin:$$apr1$$zRlu8edd$$M4hCVBfVQLhY2yfG0fgQB/"
+      - "traefik.frontend.auth.basic.users=${HTTP_USERNAME}:${HTTP_PASSWORD}"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - letsencrypt:/etc/traefik
@@ -297,9 +348,9 @@ networks:
     external:
       name: traefik_proxy
   default:
-    driver: bridge      
+    driver: bridge
+#  nextcloud_network:  
 
 volumes:
   letsencrypt:
   shared:
-  downloads:
