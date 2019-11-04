@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3'
 services:
 
 #ddclient - keep ddns updated
@@ -297,7 +297,7 @@ services:
 #Traefik - reverse proxy for containers      
   traefik:
     hostname: traefik
-    image: traefik:v1.7.18-alpine
+    image: traefik:v1.7.19-alpine
     container_name: traefik
     restart: always
     domainname: ${HOSTNAME}
