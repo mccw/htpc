@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3'
 services:
 
 #ddclient - keep ddns updated
@@ -44,15 +44,14 @@ services:
       - "traefik.frontend.headers.SSLHost=${HOSTNAME}"
       - "traefik.frontend.headers.STSIncludeSubdomains=true"
       - "traefik.frontend.headers.STSPreload=true"
-      - "traefik.frontend.headers.frameDeny=false"  
+      - "traefik.frontend.headers.frameDeny=false"
 
 #Traefik - reverse proxy for containers      
   traefik:
     hostname: traefik
-    image: traefik:v1.7.19-alpine
+    image: traefik:v1.7.20-alpine
     container_name: traefik
     restart: always
-    domainname: ${HOSTNAME}
     networks:
       - default
       - traefik_proxy
@@ -101,7 +100,6 @@ networks:
       name: traefik_proxy
   default:
     driver: bridge
-#  nextcloud_network:  
 
 volumes:
   letsencrypt:
