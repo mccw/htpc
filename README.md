@@ -9,9 +9,9 @@
 [portainer](https://hub.docker.com/r/portainer/portainer "Docker Hub portainer")</br>
 [traefik v1](https://hub.docker.com/_/traefik "Docker Hub Traefik")</br>
 [watchtower](https://hub.docker.com/r/containrrr/watchtower "Docker Hub Watchtower")</br>
-#### Run this command to deploy the utility stack
-`docker-compose -p utilities -f utilities.yml up -d --remove-orphans`
----
+#### Run this command to deploy the utility stack</br>
+`docker-compose -p utilities -f utilities.yml up -d --remove-orphans`</br>
+----
 ### HTPC
 [nzbHydra2](https://hub.docker.com/r/linuxserver/hydra2 "Docker Hub NZBHydra2")</br>
 [ombi](https://hub.docker.com/r/linuxserver/ombi "Docker Hub Ombi")</br>
