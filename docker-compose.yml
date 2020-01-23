@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 version: '3'
+=======
+version: '3.7'
+>>>>>>> a6c0330922b6288dffe65226621410cf92bc0209
 services:
 
 #MariaDb
