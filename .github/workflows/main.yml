@@ -1,0 +1,21 @@
+name: Linter
+
+on: [push, pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@master
+    - name: Run linter
+      uses: jacobtomlinson/gha-lint-yaml@master
+      with:
+        path: mccw/htpc/utilities.yml
+  
+    - uses: actions/checkout@master
+    - name: Run linter
+      uses: jacobtomlinson/gha-lint-yaml@master
+      with:
+        path: mccw/htpc/htpc.yml
