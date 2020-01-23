@@ -1,63 +1,6 @@
 version: '3.7'
 services:
 
-#MariaDb
-  # db:
-  #   image: mariadb
-  #   hostname: mariadb
-  #   container_name: mariadb
-  #   command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
-  #   restart: always
-  #   volumes:
-  #     - db:/var/lib/mysql
-  #   environment:
-  #     - TZ=${TZ}
-  #     - PUID=${PUID}
-  #     - PGID=${PGID}
-  #     - MYSQL_ROOT_PASSWORD=mariadb
-  #     - MYSQL_PASSWORD=mariadb
-  #     - MYSQL_DATABASE=nextcloud
-  #     - MYSQL_USER=nextcloud
-  #   networks:
-  #     - nextcloud_network
-  #     - default
-
-#NextCloud
-  # nextcloud:
-  #   image: nextcloud
-  #   hostname: nextcloud
-  #   container_name: nextcloud
-  #   depends_on:
-  #     - db
-  #   restart: always
-  #   volumes:
-  #     - ${DOCKERDIR}/docker/nextcloud:/config
-  #     - nextcloud:/var/www/html
-  #     - shared:/shared
-  #   environment:
-  #     - PUID=${PUID}
-  #     - PGID=${PGID}
-  #     - TZ=${TZ}
-  #   networks:
-  #     - nextcloud_network
-  #     - traefik_proxy
-  #     - default
-  #   labels:
-  #     - "traefik.enable=true"
-  #     - "traefik.backend=cloud"
-  #     - "traefik.frontend.rule=Host:cloud.${HOSTNAME}"
-  #     - "traefik.port=80"
-  #     - "traefik.docker.network=traefik_proxy"
-  #     - "traefik.frontend.headers.SSLRedirect=true"
-  #     - "traefik.frontend.headers.STSSeconds=315360000"
-  #     - "traefik.frontend.headers.browserXSSFilter=true"
-  #     - "traefik.frontend.headers.contentTypeNosniff=true"
-  #     - "traefik.frontend.headers.forceSTSHeader=true"
-  #     - "traefik.frontend.headers.SSLHost=example.com"
-  #     - "traefik.frontend.headers.STSIncludeSubdomains=true"
-  #     - "traefik.frontend.headers.STSPreload=true"
-  #     - "traefik.frontend.headers.frameDeny=false"
-
 #NZBHydra2 - Indexer 
   nzbhydra2:
     image: linuxserver/hydra2:latest
@@ -255,7 +198,6 @@ networks:
       name: traefik_proxy
   default:
     driver: bridge
-#  nextcloud_network:  
 
 volumes:
   shared:
