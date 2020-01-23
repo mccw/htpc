@@ -130,13 +130,14 @@ services:
 
 #SABnzbd - 
   sabnzbd:
-    image: "linuxserver/sabnzbd"
-    container_name: "sabnzbd"
+    image: linuxserver/sabnzbd
+    container_name: sabnzbd
+    hostname: sabnzbd
+    restart: always
     volumes:
       - ${DOCKERDIR}/docker/sabnzbd:/config
       - ${DOCKERDIR}/downloads:/downloads
       - shared:/shared
-    restart: always
     environment:
       - PUID=${PUID}
       - PGID=${PGID}

@@ -14,12 +14,15 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
+    networks:
+      - default
+  
 
 #Portainer - WebUI for Containers
   portainer:
     image: portainer/portainer
-    container_name: portainer
     hostname: portainer
+    container_name: portainer
     restart: always
     command: -H unix:///var/run/docker.sock
     volumes:
@@ -27,6 +30,8 @@ services:
       - ${DOCKERDIR}/docker/portainer/data:/data
       - shared:/shared
     environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
       - TZ=${TZ}
     networks:
       - traefik_proxy
@@ -48,19 +53,23 @@ services:
 
 #Traefik - reverse proxy for containers      
   traefik:
-    hostname: traefik
     image: traefik:v1.7.20-alpine
+    hostname: traefik
     container_name: traefik
     restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - letsencrypt:/etc/traefik
+      - shared:/shared
+    environment:
+      - CF_API_EMAIL=${CF_API_EMAIL}
+      - CF_API_KEY=${CF_API_KEY}
     networks:
       - default
       - traefik_proxy
     ports:
       - "80:80"
       - "443:443"
-    environment:
-      - CF_API_EMAIL=${CF_API_EMAIL}
-      - CF_API_KEY=${CF_API_KEY}
     labels:
       - "traefik.enable=true"
       - "traefik.backend=traefik"
@@ -77,22 +86,24 @@ services:
       - "traefik.frontend.headers.STSPreload=true"
       - "traefik.frontend.headers.frameDeny=false"
       - "traefik.frontend.auth.basic.users=${HTTP_USERNAME}:${HTTP_PASSWORD}"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - letsencrypt:/etc/traefik
-      - shared:/shared
 
 #Watchtower - docker image updater
   watchtower:
     image: containrrr/watchtower
-    container_name: watchtower
     hostname: watchtower
+    container_name: watchtower
     restart: always
+    command: --cleanup
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${DOCKERDIR}/docker/watchtower/data:/data
       - shared:/shared
-    command: --cleanup
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    networks:
+      - default
 
 networks:
   traefik_proxy:
