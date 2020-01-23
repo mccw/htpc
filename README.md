@@ -1,6 +1,8 @@
 # htpc
 **HTPC Stuffs**
 
+I'm currently running Emby directly on the Windows 10 host and everything else in linux docker containers.
+
 ## Deploy two stacks
 
 ### Utilities
@@ -23,3 +25,7 @@
 #### Run this command to deploy the htpc stack
 `docker-compose -p htpc -f htpc.yml up -d --remove-orphans`  
 
+## TODO
+1. Add VPN
+2. Add torrent client
+3. NextCloud ??
