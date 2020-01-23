@@ -11,7 +11,7 @@
 [watchtower](https://hub.docker.com/r/containrrr/watchtower "Docker Hub Watchtower")</br>
 #### Run this command to deploy the utility stack
 `docker-compose -p utilities -f utilities.yml up -d --remove-orphans`
-
+---
 ### HTPC
 [nzbHydra2](https://hub.docker.com/r/linuxserver/hydra2 "Docker Hub NZBHydra2")</br>
 [ombi](https://hub.docker.com/r/linuxserver/ombi "Docker Hub Ombi")</br>
