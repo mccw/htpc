@@ -12,4 +12,10 @@ jobs:
     - name: Run linter
       uses: jacobtomlinson/gha-lint-yaml@master
       with:
-        path: **/*.yml
+        path: /utilities.yml
+
+    - uses: actions/checkout@master
+    - name: Run linter
+      uses: jacobtomlinson/gha-lint-yaml@master
+      with:
+        path: /htpc.yml
