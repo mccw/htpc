@@ -11,23 +11,24 @@ I'm currently running Emby directly on a Windows 10 host and the following appli
 ## Deploy two stacks using docker-compose
 
 ### Utilities
-[ddclient](https://hub.docker.com/r/linuxserver/ddclient "Docker Hub ddclient")</br>
-[duplicati](https://hub.docker.com/r/linuxserver/duplicati "Docker Hub Duplicati")</br>
-[heimdall](https://hub.docker.com/r/linuxserver/heimdall "Docker Hub Heimdall")</br>
-[portainer](https://hub.docker.com/r/portainer/portainer "Docker Hub portainer")</br>
-[traefik v1](https://hub.docker.com/_/traefik "Docker Hub Traefik")</br>
-[watchtower](https://hub.docker.com/r/containrrr/watchtower "Docker Hub Watchtower")</br>
+[ddclient](https://hub.docker.com/r/linuxserver/ddclient "ddclient")</br>
+[duplicati](https://hub.docker.com/r/linuxserver/duplicati "Duplicati")</br>
+[heimdall](https://hub.docker.com/r/linuxserver/heimdall "Heimdall")</br>
+[pi.hole](https://hub.docker.com/r/pihole/pihole "pi.hole")</br>
+[portainer](https://hub.docker.com/r/portainer/portainer "Portainer")</br>
+[traefik v1](https://hub.docker.com/_/traefik "Traefik")</br>
+[watchtower](https://hub.docker.com/r/containrrr/watchtower "Watchtower")</br>
 #### Run this command to deploy the utility stack</br>
 `docker-compose -p utilities -f utilities.yml up -d --remove-orphans`</br>
 
 ---
 
 ### HTPC
-[nzbHydra2](https://hub.docker.com/r/linuxserver/hydra2 "Docker Hub NZBHydra2")</br>
-[ombi](https://hub.docker.com/r/linuxserver/ombi "Docker Hub Ombi")</br>
-[radarr](https://hub.docker.com/r/linuxserver/radarr "Docker Hub Radarr")</br>
-[SABnzbd](https://hub.docker.com/r/linuxserver/sabnzbd "Docker Hub SABnzbd")</br>
-[sonarr](https://hub.docker.com/r/linuxserver/sonarr "Docker Hub Sonarr")</br>
+[nzbHydra2](https://hub.docker.com/r/linuxserver/hydra2 "NZBHydra2")</br>
+[ombi](https://hub.docker.com/r/linuxserver/ombi "Ombi")</br>
+[radarr](https://hub.docker.com/r/linuxserver/radarr "Radarr")</br>
+[SABnzbd](https://hub.docker.com/r/linuxserver/sabnzbd "SABnzbd")</br>
+[sonarr](https://hub.docker.com/r/linuxserver/sonarr "Sonarr")</br>
 #### Run this command to deploy the htpc stack
 `docker-compose -p htpc -f htpc.yml up -d --remove-orphans`  
 
