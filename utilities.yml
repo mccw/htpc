@@ -18,6 +18,38 @@ services:
     networks:
       - default
 
+  # duplicati - backup
+  duplicati:
+    image: linuxserver/duplicati
+    hostname: duplicati
+    container_name: duplicati
+    restart: unless-stopped
+    volumes:
+      - ${DOCKERDIR}/docker/duplicati:/config
+      - ${DOCKERDIR}/docker/backups:/backups
+      - ${DOCKERDIR}/docker:/source
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    networks:
+      - traefik_proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=backup"
+      - "traefik.frontend.rule=Host:backup.${HOSTNAME}"
+      - "traefik.port=8200"
+      - "traefik.docker.network=traefik_proxy"
+      - "traefik.frontend.headers.SSLRedirect=true"
+      - "traefik.frontend.headers.STSSeconds=315360000"
+      - "traefik.frontend.headers.browserXSSFilter=true"
+      - "traefik.frontend.headers.contentTypeNosniff=true"
+      - "traefik.frontend.headers.forceSTSHeader=true"
+      - "traefik.frontend.headers.SSLHost=${HOSTNAME}"
+      - "traefik.frontend.headers.STSIncludeSubdomains=true"
+      - "traefik.frontend.headers.STSPreload=true"
+      - "traefik.frontend.headers.frameDeny=true"
+
   # Organizer - Unified HTPC/Home Server Web Interface
   organizr:
     image: organizrtools/organizr-v2
