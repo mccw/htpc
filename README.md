@@ -1,7 +1,7 @@
 # htpc
 **HTPC Stuffs**
 
-I'm currently running Emby directly on a Windows 10 host and everything else in Docker Desktop via linux containers.
+I'm currently running Emby directly on a Windows 10 host and the following applications in Docker Desktop via linux containers.
 
 ## Deploy two stacks using docker-compose
 
