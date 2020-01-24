@@ -28,6 +28,7 @@ services:
       - ${DOCKERDIR}/docker/duplicati:/config
       - ${DOCKERDIR}/docker/backups:/backups
       - ${DOCKERDIR}/docker:/source
+      - shared:/shared
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
