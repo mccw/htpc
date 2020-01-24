@@ -1,7 +1,8 @@
+---
 version: '3.7'
 services:
 
-#NZBHydra2 - Indexer 
+  # NZBHydra2 - Indexer
   nzbhydra2:
     image: linuxserver/hydra2:latest
     hostname: nzbhydra
@@ -33,13 +34,13 @@ services:
       - "traefik.frontend.headers.STSPreload=true"
       - "traefik.frontend.headers.frameDeny=false"
 
-#Ombi - Show Requestor      
+  # Ombi - Show Requestor
   ombi:
     image: linuxserver/ombi:latest
     hostname: ombi
     container_name: ombi
     restart: always
-    volumes: 
+    volumes:
       - ${DOCKERDIR}/docker/ombi:/config
       - shared:/shared
     environment:
@@ -62,9 +63,9 @@ services:
       - "traefik.frontend.headers.SSLHost=${HOSTNAME}"
       - "traefik.frontend.headers.STSIncludeSubdomains=true"
       - "traefik.frontend.headers.STSPreload=true"
-      - "traefik.frontend.headers.frameDeny=false"      
+      - "traefik.frontend.headers.frameDeny=false"
 
-#Radarr – Movie Download and Management
+  # Radarr – Movie Download and Management
   radarr:
     image: linuxserver/radarr:latest
     container_name: radarr
@@ -95,9 +96,9 @@ services:
       - "traefik.frontend.headers.SSLHost=${HOSTNAME}"
       - "traefik.frontend.headers.STSIncludeSubdomains=true"
       - "traefik.frontend.headers.STSPreload=true"
-      - "traefik.frontend.headers.frameDeny=false"      
+      - "traefik.frontend.headers.frameDeny=false"
 
-#SABnzbd - 
+  # SABnzbd -
   sabnzbd:
     image: linuxserver/sabnzbd
     container_name: sabnzbd
@@ -127,9 +128,9 @@ services:
       - "traefik.frontend.headers.SSLHost=${HOSTNAME}"
       - "traefik.frontend.headers.STSIncludeSubdomains=true"
       - "traefik.frontend.headers.STSPreload=true"
-      - "traefik.frontend.headers.frameDeny=false"      
+      - "traefik.frontend.headers.frameDeny=false"
 
-#Sonarr – TV Show Download and Management
+  # Sonarr – TV Show Download and Management
   sonarr:
     image: linuxserver/sonarr:preview
     container_name: sonarr
@@ -160,7 +161,7 @@ services:
       - "traefik.frontend.headers.SSLHost=${HOSTNAME}"
       - "traefik.frontend.headers.STSIncludeSubdomains=true"
       - "traefik.frontend.headers.STSPreload=true"
-      - "traefik.frontend.headers.frameDeny=false"      
+      - "traefik.frontend.headers.frameDeny=false"
 
 networks:
   traefik_proxy:

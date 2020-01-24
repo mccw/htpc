@@ -2,7 +2,7 @@
 version: '3.7'
 services:
 
-# ddclient - keep ddns updated
+  # ddclient - keep ddns updated
   ddclient:
     image: linuxserver/ddclient
     hostname: ddclient
@@ -18,7 +18,7 @@ services:
     networks:
       - default
 
-# Organizer - Unified HTPC/Home Server Web Interface
+  # Organizer - Unified HTPC/Home Server Web Interface
   organizr:
     image: organizrtools/organizr-v2
     container_name: organizr
@@ -49,7 +49,7 @@ services:
       - "traefik.frontend.headers.STSPreload=true"
       - "traefik.frontend.headers.frameDeny=true"
 
-# Portainer - WebUI for Containers
+  # Portainer - WebUI for Containers
   portainer:
     image: portainer/portainer
     hostname: portainer
@@ -82,7 +82,7 @@ services:
       - "traefik.frontend.headers.STSPreload=true"
       - "traefik.frontend.headers.frameDeny=false"
 
-# Traefik - reverse proxy for containers
+  # Traefik - reverse proxy for containers
   traefik:
     image: traefik:v1.7.20-alpine
     hostname: traefik
@@ -118,7 +118,7 @@ services:
       - "traefik.frontend.headers.frameDeny=false"
       - "traefik.frontend.auth.basic.users=${HTTP_USERNAME}:${HTTP_PASSWORD}"
 
-# Watchtower - docker image updater
+  # Watchtower - docker image updater
   watchtower:
     image: containrrr/watchtower
     hostname: watchtower
