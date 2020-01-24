@@ -13,7 +13,7 @@ I'm currently running Emby directly on a Windows 10 host and the following appli
 ### Utilities
 [ddclient](https://hub.docker.com/r/linuxserver/ddclient "Docker Hub ddclient")</br>
 [duplicati](https://hub.docker.com/r/linuxserver/duplicati "Docker Hub Duplicati")</br>
-[organizr](https://hub.docker.com/r/organizrtools/organizr-v2 "Docker Hub Organizr")</br>
+[heimdall](https://hub.docker.com/r/linuxserver/heimdall "Docker Hub Heimdall")</br>
 [portainer](https://hub.docker.com/r/portainer/portainer "Docker Hub portainer")</br>
 [traefik v1](https://hub.docker.com/_/traefik "Docker Hub Traefik")</br>
 [watchtower](https://hub.docker.com/r/containrrr/watchtower "Docker Hub Watchtower")</br>
