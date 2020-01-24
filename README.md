@@ -29,3 +29,4 @@ I'm currently running Emby directly on the Windows 10 host and everything else i
 1. Add VPN
 2. Add torrent client
 3. NextCloud ??
+4. Traefik v2 ?
