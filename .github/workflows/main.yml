@@ -4,9 +4,9 @@ on: [push]
 jobs:
   lintAllTheThings:
     runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@master
-        - name: yaml-lint
+    steps:
+    - uses: actions/checkout@master
+    - name: yaml-lint
       uses: ibiqlik/action-yamllint@master
       with:
         file_or_dir: .
