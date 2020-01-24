@@ -51,15 +51,14 @@ services:
       - "traefik.frontend.headers.STSPreload=true"
       - "traefik.frontend.headers.frameDeny=false"
 
-  # Organizer - Unified HTPC/Home Server Web Interface
-  organizr:
-    image: organizrtools/organizr-v2
-    container_name: organizr
-    hostname: organizr
-    restart: always
+  # Heimdall
+  heimdall:
+    image: linuxserver/heimdall
+    container_name: heimdall
+    hostname: heimdall
+    restart: unless-stopped
     volumes:
-      - ${DOCKERDIR}/docker/organizr:/config
-      - shared:/shared
+      - ${DOCKERDIR}/docker/heimdall:/config
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -68,8 +67,8 @@ services:
       - traefik_proxy
     labels:
       - "traefik.enable=true"
-      - "traefik.backend=organizr"
-      - "traefik.frontend.rule=Host:organizr.${HOSTNAME}"
+      - "traefik.backend=dashboard"
+      - "traefik.frontend.rule=Host:dashboard.${HOSTNAME}"
       - "traefik.port=80"
       - "traefik.docker.network=traefik_proxy"
       - "traefik.frontend.headers.SSLRedirect=true"
