@@ -3,7 +3,7 @@
 
 I'm currently running Emby directly on a Windows 10 host and the following applications in Docker Desktop via linux containers.</br>
 
-Current Windows version:        2004 (OS Build 19041.1)</br>
+Current Windows 10 version:     2004 (OS Build 19041.1)</br>
 Current Docker Desktop version: 2.1.7.0 (41536) Edge</br>
 
 ## Deploy two stacks using docker-compose
