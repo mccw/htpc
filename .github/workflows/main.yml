@@ -9,4 +9,4 @@ jobs:
     - name: yaml-lint
       uses: ibiqlik/action-yamllint@master
       with:
-        file_or_dir: .
+        file_or_dir: /htpc.yml /utilities.yml
