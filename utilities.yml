@@ -1,12 +1,13 @@
+---
 version: '3.7'
 services:
 
-#ddclient - keep ddns updated
+# ddclient - keep ddns updated
   ddclient:
     image: linuxserver/ddclient
     hostname: ddclient
     container_name: ddclient
-    restart: unless-stopped  
+    restart: unless-stopped
     volumes:
       - ${DOCKERDIR}/docker/ddclient:/config
       - shared:/shared
@@ -17,7 +18,7 @@ services:
     networks:
       - default
 
-#Organizer - Unified HTPC/Home Server Web Interface
+# Organizer - Unified HTPC/Home Server Web Interface
   organizr:
     image: organizrtools/organizr-v2
     container_name: organizr
@@ -35,7 +36,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.backend=organizr"
-      - "traefik.frontend.rule=Host:organizr.${HOSTNAME}"  
+      - "traefik.frontend.rule=Host:organizr.${HOSTNAME}"
       - "traefik.port=80"
       - "traefik.docker.network=traefik_proxy"
       - "traefik.frontend.headers.SSLRedirect=true"
@@ -47,8 +48,8 @@ services:
       - "traefik.frontend.headers.STSIncludeSubdomains=true"
       - "traefik.frontend.headers.STSPreload=true"
       - "traefik.frontend.headers.frameDeny=true"
-    
-#Portainer - WebUI for Containers
+
+# Portainer - WebUI for Containers
   portainer:
     image: portainer/portainer
     hostname: portainer
@@ -68,7 +69,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.backend=portainer"
-      - "traefik.frontend.rule=Host:portainer.${HOSTNAME}"  
+      - "traefik.frontend.rule=Host:portainer.${HOSTNAME}"
       - "traefik.port=9000"
       - "traefik.docker.network=traefik_proxy"
       - "traefik.frontend.headers.SSLRedirect=true"
@@ -81,7 +82,7 @@ services:
       - "traefik.frontend.headers.STSPreload=true"
       - "traefik.frontend.headers.frameDeny=false"
 
-#Traefik - reverse proxy for containers      
+# Traefik - reverse proxy for containers
   traefik:
     image: traefik:v1.7.20-alpine
     hostname: traefik
@@ -103,7 +104,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.backend=traefik"
-      - "traefik.frontend.rule=Host:traefik.${HOSTNAME}"  
+      - "traefik.frontend.rule=Host:traefik.${HOSTNAME}"
       - "traefik.port=8080"
       - "traefik.docker.network=traefik_proxy"
       - "traefik.frontend.headers.SSLRedirect=true"
@@ -117,7 +118,7 @@ services:
       - "traefik.frontend.headers.frameDeny=false"
       - "traefik.frontend.auth.basic.users=${HTTP_USERNAME}:${HTTP_PASSWORD}"
 
-#Watchtower - docker image updater
+# Watchtower - docker image updater
   watchtower:
     image: containrrr/watchtower
     hostname: watchtower
