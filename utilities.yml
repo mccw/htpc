@@ -100,7 +100,7 @@ services:
       - VIRTUAL_HOST=pihole.${HOSTNAME}
       - VIRTUAL_PORT=80
       - TZ=${TZ}
-      - WEBPASSWORD=PIHOLEWEBPASSWORD
+      - WEBPASSWORD=${HTTP_PASSWORD}
       - DNS1=127.0.0.1
       - DNS2=1.1.1.1
     networks:
@@ -108,11 +108,9 @@ services:
     ports:
       - '53:53/tcp'
       - '53:53/udp'
-      # - '67:67/udp'
       - '8043:80/tcp'
     labels:
       - "traefik.enable=true"
-      # https://www.techjunktrunk.com/docker/2017/11/03/traefik-default-server-catch-all/
       - "traefik.frontend.rule=HostRegexp:pihole.${HOSTNAME},{catchall:.*}"
       - "traefik.frontend.priority=1"
       - "traefik.backend=pihole"
