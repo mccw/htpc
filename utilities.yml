@@ -121,7 +121,7 @@ services:
     image: portainer/portainer
     hostname: portainer
     container_name: portainer
-    restart: always
+    restart: unless-stopped
     command: -H unix:///var/run/docker.sock
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -154,7 +154,7 @@ services:
     image: traefik:v1.7.20-alpine
     hostname: traefik
     container_name: traefik
-    restart: always
+    restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - letsencrypt:/etc/traefik
@@ -190,7 +190,7 @@ services:
     image: containrrr/watchtower
     hostname: watchtower
     container_name: watchtower
-    restart: always
+    restart: unless-stopped
     command: --cleanup
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
