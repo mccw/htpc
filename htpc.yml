@@ -7,7 +7,7 @@ services:
     image: linuxserver/hydra2:latest
     hostname: nzbhydra
     container_name: nzbhydra
-    restart: always
+    restart: unless-stopped
     volumes:
       - ${DOCKERDIR}/docker/nzbhydra:/config
       - ${DOCKERDIR}/downloads:/downloads
@@ -39,7 +39,7 @@ services:
     image: linuxserver/ombi:latest
     hostname: ombi
     container_name: ombi
-    restart: always
+    restart: unless-stopped
     volumes:
       - ${DOCKERDIR}/docker/ombi:/config
       - shared:/shared
@@ -70,7 +70,7 @@ services:
     image: linuxserver/radarr:latest
     container_name: radarr
     hostname: radarr
-    restart: always
+    restart: unless-stopped
     volumes:
       - ${DOCKERDIR}/docker/radarr:/config
       - ${DOCKERDIR}/downloads:/downloads
@@ -103,7 +103,7 @@ services:
     image: linuxserver/sabnzbd
     container_name: sabnzbd
     hostname: sabnzbd
-    restart: always
+    restart: unless-stopped
     volumes:
       - ${DOCKERDIR}/docker/sabnzbd:/config
       - ${DOCKERDIR}/downloads:/downloads
@@ -135,7 +135,7 @@ services:
     image: linuxserver/sonarr:preview
     container_name: sonarr
     hostname: sonarr
-    restart: always
+    restart: unless-stopped
     volumes:
       - ${DOCKERDIR}/docker/sonarr:/config
       - ${DOCKERDIR}/downloads:/downloads
