@@ -161,7 +161,6 @@ services:
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
       - "traefik.http.middlewares.auth.basicauth.users=${HTTP_USERNAME}:${HTTP_PASSWORD}"
 
-
   # Watchtower - docker image updater
   watchtower:
     image: containrrr/watchtower
