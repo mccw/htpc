@@ -16,6 +16,8 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
+    # networks:
+      # - utilities
 
   # duplicati - store backups online with strong encryption
   duplicati:
@@ -36,11 +38,20 @@ services:
     networks:
       - traefik
     labels:
-      - "traefik.http.routers.backup.rule=Host(`backup.${HOSTNAME}`)"
-      - "traefik.http.routers.backup.tls=true"
-      - "traefik.http.routers.backup.tls.certresolver=le"
-      - "traefik.http.routers.backup.entrypoints=websecure"
-      - "traefik.http.services.backup.loadbalancer.server.port=8200"
+      - "traefik.enable=true"
+      - "traefik.backend=backup"
+      - "traefik.frontend.rule=Host:backup.${HOSTNAME}"
+      - "traefik.port=8200"
+      - "traefik.docker.network=traefik"
+      - "traefik.frontend.headers.SSLRedirect=true"
+      - "traefik.frontend.headers.STSSeconds=315360000"
+      - "traefik.frontend.headers.browserXSSFilter=true"
+      - "traefik.frontend.headers.contentTypeNosniff=true"
+      - "traefik.frontend.headers.forceSTSHeader=true"
+      - "traefik.frontend.headers.SSLHost=${HOSTNAME}"
+      - "traefik.frontend.headers.STSIncludeSubdomains=true"
+      - "traefik.frontend.headers.STSPreload=true"
+      - "traefik.frontend.headers.frameDeny=false"
 
   # Heimdall - Application dashboard
   heimdall:
@@ -58,11 +69,20 @@ services:
     networks:
       - traefik
     labels:
-      - "traefik.http.routers.dashboard.rule=Host(`dashboard.${HOSTNAME}`)"
-      - "traefik.http.routers.dashboard.tls=true"
-      - "traefik.http.routers.dashboard.tls.certresolver=le"
-      - "traefik.http.routers.dashboard.entrypoints=websecure"
-      - "traefik.http.services.dashboard.loadbalancer.server.port=80"
+      - "traefik.enable=true"
+      - "traefik.backend=dashboard"
+      - "traefik.frontend.rule=Host:dashboard.${HOSTNAME}"
+      - "traefik.port=80"
+      - "traefik.docker.network=traefik"
+      - "traefik.frontend.headers.SSLRedirect=true"
+      - "traefik.frontend.headers.STSSeconds=315360000"
+      - "traefik.frontend.headers.browserXSSFilter=true"
+      - "traefik.frontend.headers.contentTypeNosniff=true"
+      - "traefik.frontend.headers.forceSTSHeader=true"
+      - "traefik.frontend.headers.SSLHost=${HOSTNAME}"
+      - "traefik.frontend.headers.STSIncludeSubdomains=true"
+      - "traefik.frontend.headers.STSPreload=true"
+      - "traefik.frontend.headers.frameDeny=true"
 
   # PiHole - network ad blocker
   pihole:
@@ -91,11 +111,11 @@ services:
       - '53:53/udp'
       - '8043:80/tcp'
     labels:
-      - "traefik.http.routers.pihole.rule=Host(`pihole.${HOSTNAME}`)"
-      - "traefik.http.routers.pihole.tls=true"
-      - "traefik.http.routers.pihole.tls.certresolver=le"
-      - "traefik.http.routers.pihole.entrypoints=websecure"
-      - "traefik.http.services.pihole.loadbalancer.server.port=80"
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=HostRegexp:pihole.${HOSTNAME},{catchall:.*}"
+      - "traefik.frontend.priority=1"
+      - "traefik.backend=pihole"
+      - "traefik.port=80"
 
   # Portainer - WebUI for Containers
   portainer:
@@ -116,27 +136,28 @@ services:
     networks:
       - traefik
     labels:
-      - "traefik.http.routers.portainer.rule=Host(`portainer.${HOSTNAME}`)"
-      - "traefik.http.routers.portainer.tls=true"
-      - "traefik.http.routers.portainer.tls.certresolver=le"
-      - "traefik.http.routers.portainer.entrypoints=websecure"
-      - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+      - "traefik.enable=true"
+      - "traefik.backend=portainer"
+      - "traefik.frontend.rule=Host:portainer.${HOSTNAME}"
+      - "traefik.port=9000"
+      - "traefik.docker.network=traefik"
+      - "traefik.frontend.headers.SSLRedirect=true"
+      - "traefik.frontend.headers.STSSeconds=315360000"
+      - "traefik.frontend.headers.browserXSSFilter=true"
+      - "traefik.frontend.headers.contentTypeNosniff=true"
+      - "traefik.frontend.headers.forceSTSHeader=true"
+      - "traefik.frontend.headers.SSLHost=${HOSTNAME}"
+      - "traefik.frontend.headers.STSIncludeSubdomains=true"
+      - "traefik.frontend.headers.STSPreload=true"
+      - "traefik.frontend.headers.frameDeny=false"
 
-  # Traefik v2 - reverse proxy for containers
+  # Traefik - reverse proxy for containers
   traefik:
-    image: traefik:latest
+    image: traefik:v1.7.20-alpine
     init: true
     hostname: traefik
     container_name: traefik
     restart: unless-stopped
-    command:
-      - --entrypoints.web.address=:80
-      - --entrypoints.websecure.address=:443
-      - --providers.docker=true
-      - --api.dashboard=true
-      - --certificatesresolvers.le.acme.email=mccolloughs@gmail.com
-      - --certificatesresolvers.le.acme.storage=/etc/traefik/acme.json
-      - --certificatesresolvers.le.acme.tlschallenge=true
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - letsencrypt:/etc/traefik
@@ -150,17 +171,21 @@ services:
       - "80:80"
       - "443:443"
     labels:
-      - "traefik.http.routers.traefik.rule=Host(`traefik.${HOSTNAME}`)"
-      - "traefik.http.routers.traefik.service=api@internal"
-      - "traefik.http.routers.traefik.middlewares=auth"
-      - "traefik.http.routers.traefik.tls.certresolver=le"
-      - "traefik.http.routers.traefik.entrypoints=websecure"
-      - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
-      - "traefik.http.routers.http-catchall.entrypoints=web"
-      - "traefik.http.routers.http-catchall.middlewares=redirect-to-https"
-      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
-      - "traefik.http.middlewares.auth.basicauth.users=${HTTP_USERNAME}:${HTTP_PASSWORD}"
-
+      - "traefik.enable=true"
+      - "traefik.backend=traefik"
+      - "traefik.frontend.rule=Host:traefik.${HOSTNAME}"
+      - "traefik.port=8080"
+      - "traefik.docker.network=traefik"
+      - "traefik.frontend.headers.SSLRedirect=true"
+      - "traefik.frontend.headers.STSSeconds=315360000"
+      - "traefik.frontend.headers.browserXSSFilter=true"
+      - "traefik.frontend.headers.contentTypeNosniff=true"
+      - "traefik.frontend.headers.forceSTSHeader=true"
+      - "traefik.frontend.headers.SSLHost=${HOSTNAME}"
+      - "traefik.frontend.headers.STSIncludeSubdomains=true"
+      - "traefik.frontend.headers.STSPreload=true"
+      - "traefik.frontend.headers.frameDeny=false"
+      - "traefik.frontend.auth.basic.users=${HTTP_USERNAME}:${HTTP_PASSWORD}"
 
   # Watchtower - docker image updater
   watchtower:

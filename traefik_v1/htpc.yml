@@ -1,0 +1,173 @@
+---
+version: '3.7'
+services:
+
+  # NZBHydra2 - Meta search for NZB News Indexers
+  nzbhydra2:
+    image: linuxserver/hydra2:latest
+    hostname: nzbhydra
+    container_name: nzbhydra
+    restart: unless-stopped
+    volumes:
+      - ${DOCKERDIR}/docker/nzbhydra:/config
+      - ${DOCKERDIR}/downloads:/downloads
+      - shared:/shared
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=nzbhydra"
+      - "traefik.frontend.rule=Host:nzbhydra.${HOSTNAME}"
+      - "traefik.port=5076"
+      - "traefik.docker.network=traefik"
+      - "traefik.frontend.headers.SSLRedirect=true"
+      - "traefik.frontend.headers.STSSeconds=315360000"
+      - "traefik.frontend.headers.browserXSSFilter=true"
+      - "traefik.frontend.headers.contentTypeNosniff=true"
+      - "traefik.frontend.headers.forceSTSHeader=true"
+      - "traefik.frontend.headers.SSLHost=${HOSTNAME}"
+      - "traefik.frontend.headers.STSIncludeSubdomains=true"
+      - "traefik.frontend.headers.STSPreload=true"
+      - "traefik.frontend.headers.frameDeny=false"
+
+  # Ombi - Show Requestor
+  ombi:
+    image: linuxserver/ombi:latest
+    hostname: ombi
+    container_name: ombi
+    restart: unless-stopped
+    volumes:
+      - ${DOCKERDIR}/docker/ombi:/config
+      - shared:/shared
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=ombi"
+      - "traefik.frontend.rule=Host:ombi.${HOSTNAME}"
+      - "traefik.port=3579"
+      - "traefik.docker.network=traefik"
+      - "traefik.frontend.headers.SSLRedirect=true"
+      - "traefik.frontend.headers.STSSeconds=315360000"
+      - "traefik.frontend.headers.browserXSSFilter=true"
+      - "traefik.frontend.headers.contentTypeNosniff=true"
+      - "traefik.frontend.headers.forceSTSHeader=true"
+      - "traefik.frontend.headers.SSLHost=${HOSTNAME}"
+      - "traefik.frontend.headers.STSIncludeSubdomains=true"
+      - "traefik.frontend.headers.STSPreload=true"
+      - "traefik.frontend.headers.frameDeny=false"
+
+  # Radarr – Movie Download and Management
+  radarr:
+    image: linuxserver/radarr:latest
+    container_name: radarr
+    hostname: radarr
+    restart: unless-stopped
+    volumes:
+      - ${DOCKERDIR}/docker/radarr:/config
+      - ${DOCKERDIR}/downloads:/downloads
+      - ${DATADIR}/My Videos:/movies
+      - shared:/shared
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=radarr"
+      - "traefik.frontend.rule=Host:radarr.${HOSTNAME}"
+      - "traefik.port=7878"
+      - "traefik.docker.network=traefik"
+      - "traefik.frontend.headers.SSLRedirect=true"
+      - "traefik.frontend.headers.STSSeconds=315360000"
+      - "traefik.frontend.headers.browserXSSFilter=true"
+      - "traefik.frontend.headers.contentTypeNosniff=true"
+      - "traefik.frontend.headers.forceSTSHeader=true"
+      - "traefik.frontend.headers.SSLHost=${HOSTNAME}"
+      - "traefik.frontend.headers.STSIncludeSubdomains=true"
+      - "traefik.frontend.headers.STSPreload=true"
+      - "traefik.frontend.headers.frameDeny=false"
+
+  # SABnzbd - Binary News Reader
+  sabnzbd:
+    image: linuxserver/sabnzbd
+    container_name: sabnzbd
+    hostname: sabnzbd
+    restart: unless-stopped
+    volumes:
+      - ${DOCKERDIR}/docker/sabnzbd:/config
+      - ${DOCKERDIR}/downloads:/downloads
+      - shared:/shared
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=sabnzbd"
+      - "traefik.frontend.rule=Host:sabnzbd.${HOSTNAME}"
+      - "traefik.port=8080"
+      - "traefik.docker.network=traefik"
+      - "traefik.frontend.headers.SSLRedirect=true"
+      - "traefik.frontend.headers.STSSeconds=315360000"
+      - "traefik.frontend.headers.browserXSSFilter=true"
+      - "traefik.frontend.headers.contentTypeNosniff=true"
+      - "traefik.frontend.headers.forceSTSHeader=true"
+      - "traefik.frontend.headers.SSLHost=${HOSTNAME}"
+      - "traefik.frontend.headers.STSIncludeSubdomains=true"
+      - "traefik.frontend.headers.STSPreload=true"
+      - "traefik.frontend.headers.frameDeny=false"
+
+  # Sonarr – TV Show Download and Management
+  sonarr:
+    image: linuxserver/sonarr:preview
+    container_name: sonarr
+    hostname: sonarr
+    restart: unless-stopped
+    volumes:
+      - ${DOCKERDIR}/docker/sonarr:/config
+      - ${DOCKERDIR}/downloads:/downloads
+      - ${DATADIR}/My TV:/tv
+      - shared:/shared
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=sonarr"
+      - "traefik.frontend.rule=Host:sonarr.${HOSTNAME}"
+      - "traefik.port=8989"
+      - "traefik.docker.network=traefik"
+      - "traefik.frontend.headers.SSLRedirect=true"
+      - "traefik.frontend.headers.STSSeconds=315360000"
+      - "traefik.frontend.headers.browserXSSFilter=true"
+      - "traefik.frontend.headers.contentTypeNosniff=true"
+      - "traefik.frontend.headers.forceSTSHeader=true"
+      - "traefik.frontend.headers.SSLHost=${HOSTNAME}"
+      - "traefik.frontend.headers.STSIncludeSubdomains=true"
+      - "traefik.frontend.headers.STSPreload=true"
+      - "traefik.frontend.headers.frameDeny=false"
+
+networks:
+  traefik:
+    external:
+      name: traefik
+
+volumes:
+  shared:
+    external: true
