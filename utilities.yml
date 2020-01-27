@@ -18,7 +18,7 @@ services:
     networks:
       - default
 
-  # duplicati - backup
+  # duplicati - store backups online with strong encryption
   duplicati:
     image: linuxserver/duplicati
     hostname: duplicati
@@ -51,7 +51,7 @@ services:
       - "traefik.frontend.headers.STSPreload=true"
       - "traefik.frontend.headers.frameDeny=false"
 
-  # Heimdall
+  # Heimdall - Application dashboard
   heimdall:
     image: linuxserver/heimdall
     container_name: heimdall
@@ -81,7 +81,7 @@ services:
       - "traefik.frontend.headers.STSPreload=true"
       - "traefik.frontend.headers.frameDeny=true"
 
-  # PiHole
+  # PiHole - network ad blocker
   pihole:
     container_name: pihole
     domainname: docker

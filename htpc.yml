@@ -2,7 +2,7 @@
 version: '3.7'
 services:
 
-  # NZBHydra2 - Indexer
+  # NZBHydra2 - Meta search for NZB News Indexers
   nzbhydra2:
     image: linuxserver/hydra2:latest
     hostname: nzbhydra
@@ -98,7 +98,7 @@ services:
       - "traefik.frontend.headers.STSPreload=true"
       - "traefik.frontend.headers.frameDeny=false"
 
-  # SABnzbd -
+  # SABnzbd - Binary News Reader
   sabnzbd:
     image: linuxserver/sabnzbd
     container_name: sabnzbd
