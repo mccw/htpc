@@ -17,13 +17,13 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     networks:
-      - traefik_proxy
+      - traefik
     labels:
       - "traefik.enable=true"
       - "traefik.backend=nzbhydra"
       - "traefik.frontend.rule=Host:nzbhydra.${HOSTNAME}"
       - "traefik.port=5076"
-      - "traefik.docker.network=traefik_proxy"
+      - "traefik.docker.network=traefik"
       - "traefik.frontend.headers.SSLRedirect=true"
       - "traefik.frontend.headers.STSSeconds=315360000"
       - "traefik.frontend.headers.browserXSSFilter=true"
@@ -48,13 +48,13 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     networks:
-      - traefik_proxy
+      - traefik
     labels:
       - "traefik.enable=true"
       - "traefik.backend=ombi"
       - "traefik.frontend.rule=Host:ombi.${HOSTNAME}"
       - "traefik.port=3579"
-      - "traefik.docker.network=traefik_proxy"
+      - "traefik.docker.network=traefik"
       - "traefik.frontend.headers.SSLRedirect=true"
       - "traefik.frontend.headers.STSSeconds=315360000"
       - "traefik.frontend.headers.browserXSSFilter=true"
@@ -81,13 +81,13 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     networks:
-      - traefik_proxy
+      - traefik
     labels:
       - "traefik.enable=true"
       - "traefik.backend=radarr"
       - "traefik.frontend.rule=Host:radarr.${HOSTNAME}"
       - "traefik.port=7878"
-      - "traefik.docker.network=traefik_proxy"
+      - "traefik.docker.network=traefik"
       - "traefik.frontend.headers.SSLRedirect=true"
       - "traefik.frontend.headers.STSSeconds=315360000"
       - "traefik.frontend.headers.browserXSSFilter=true"
@@ -113,13 +113,13 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     networks:
-      - traefik_proxy
+      - traefik
     labels:
       - "traefik.enable=true"
       - "traefik.backend=sabnzbd"
       - "traefik.frontend.rule=Host:sabnzbd.${HOSTNAME}"
       - "traefik.port=8080"
-      - "traefik.docker.network=traefik_proxy"
+      - "traefik.docker.network=traefik"
       - "traefik.frontend.headers.SSLRedirect=true"
       - "traefik.frontend.headers.STSSeconds=315360000"
       - "traefik.frontend.headers.browserXSSFilter=true"
@@ -146,13 +146,13 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     networks:
-      - traefik_proxy
+      - traefik
     labels:
       - "traefik.enable=true"
       - "traefik.backend=sonarr"
       - "traefik.frontend.rule=Host:sonarr.${HOSTNAME}"
       - "traefik.port=8989"
-      - "traefik.docker.network=traefik_proxy"
+      - "traefik.docker.network=traefik"
       - "traefik.frontend.headers.SSLRedirect=true"
       - "traefik.frontend.headers.STSSeconds=315360000"
       - "traefik.frontend.headers.browserXSSFilter=true"
@@ -164,11 +164,9 @@ services:
       - "traefik.frontend.headers.frameDeny=false"
 
 networks:
-  traefik_proxy:
+  traefik:
     external:
-      name: traefik_proxy
-  default:
-    driver: bridge
+      name: traefik
 
 volumes:
   shared:

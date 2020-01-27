@@ -5,6 +5,7 @@ services:
   # ddclient - keep ddns updated
   ddclient:
     image: linuxserver/ddclient
+    init: true
     hostname: ddclient
     container_name: ddclient
     restart: unless-stopped
@@ -15,12 +16,13 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
-    networks:
-      - default
+    # networks:
+      # - utilities
 
   # duplicati - store backups online with strong encryption
   duplicati:
     image: linuxserver/duplicati
+    init: true
     hostname: duplicati
     container_name: duplicati
     restart: unless-stopped
@@ -34,13 +36,13 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     networks:
-      - traefik_proxy
+      - traefik
     labels:
       - "traefik.enable=true"
       - "traefik.backend=backup"
       - "traefik.frontend.rule=Host:backup.${HOSTNAME}"
       - "traefik.port=8200"
-      - "traefik.docker.network=traefik_proxy"
+      - "traefik.docker.network=traefik"
       - "traefik.frontend.headers.SSLRedirect=true"
       - "traefik.frontend.headers.STSSeconds=315360000"
       - "traefik.frontend.headers.browserXSSFilter=true"
@@ -54,8 +56,9 @@ services:
   # Heimdall - Application dashboard
   heimdall:
     image: linuxserver/heimdall
-    container_name: heimdall
+    init: true
     hostname: heimdall
+    container_name: heimdall
     restart: unless-stopped
     volumes:
       - ${DOCKERDIR}/docker/heimdall:/config
@@ -64,13 +67,13 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     networks:
-      - traefik_proxy
+      - traefik
     labels:
       - "traefik.enable=true"
       - "traefik.backend=dashboard"
       - "traefik.frontend.rule=Host:dashboard.${HOSTNAME}"
       - "traefik.port=80"
-      - "traefik.docker.network=traefik_proxy"
+      - "traefik.docker.network=traefik"
       - "traefik.frontend.headers.SSLRedirect=true"
       - "traefik.frontend.headers.STSSeconds=315360000"
       - "traefik.frontend.headers.browserXSSFilter=true"
@@ -83,19 +86,17 @@ services:
 
   # PiHole - network ad blocker
   pihole:
+    image: pihole/pihole:latest
+    init: true
+    hostname: pihole
     container_name: pihole
     domainname: docker
-    hostname: pihole
-    image: pihole/pihole:latest
     restart: unless-stopped
     volumes:
       - ${DOCKERDIR}/docker/pihole:/etc/pihole
       - ${DOCKERDIR}/docker/pihole/pihole.log:/var/log/pihole.log
       - ${DOCKERDIR}/docker/pihole/dnsmasq.d:/etc/dnsmasq.d
-    cap_add:
-      - NET_ADMIN
     environment:
-      - ServerIP=${SERVER_IP}
       - PROXY_LOCATION=pihole
       - VIRTUAL_HOST=pihole.${HOSTNAME}
       - VIRTUAL_PORT=80
@@ -104,7 +105,7 @@ services:
       - DNS1=127.0.0.1
       - DNS2=1.1.1.1
     networks:
-      - traefik_proxy
+      - traefik
     ports:
       - '53:53/tcp'
       - '53:53/udp'
@@ -119,6 +120,7 @@ services:
   # Portainer - WebUI for Containers
   portainer:
     image: portainer/portainer
+    init: true
     hostname: portainer
     container_name: portainer
     restart: unless-stopped
@@ -132,13 +134,13 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     networks:
-      - traefik_proxy
+      - traefik
     labels:
       - "traefik.enable=true"
       - "traefik.backend=portainer"
       - "traefik.frontend.rule=Host:portainer.${HOSTNAME}"
       - "traefik.port=9000"
-      - "traefik.docker.network=traefik_proxy"
+      - "traefik.docker.network=traefik"
       - "traefik.frontend.headers.SSLRedirect=true"
       - "traefik.frontend.headers.STSSeconds=315360000"
       - "traefik.frontend.headers.browserXSSFilter=true"
@@ -152,6 +154,7 @@ services:
   # Traefik - reverse proxy for containers
   traefik:
     image: traefik:v1.7.20-alpine
+    init: true
     hostname: traefik
     container_name: traefik
     restart: unless-stopped
@@ -163,8 +166,7 @@ services:
       - CF_API_EMAIL=${CF_API_EMAIL}
       - CF_API_KEY=${CF_API_KEY}
     networks:
-      - default
-      - traefik_proxy
+      - traefik
     ports:
       - "80:80"
       - "443:443"
@@ -173,7 +175,7 @@ services:
       - "traefik.backend=traefik"
       - "traefik.frontend.rule=Host:traefik.${HOSTNAME}"
       - "traefik.port=8080"
-      - "traefik.docker.network=traefik_proxy"
+      - "traefik.docker.network=traefik"
       - "traefik.frontend.headers.SSLRedirect=true"
       - "traefik.frontend.headers.STSSeconds=315360000"
       - "traefik.frontend.headers.browserXSSFilter=true"
@@ -188,6 +190,7 @@ services:
   # Watchtower - docker image updater
   watchtower:
     image: containrrr/watchtower
+    init: true
     hostname: watchtower
     container_name: watchtower
     restart: unless-stopped
@@ -200,15 +203,11 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
-    networks:
-      - default
 
 networks:
-  traefik_proxy:
+  traefik:
     external:
-      name: traefik_proxy
-  default:
-    driver: bridge
+      name: traefik
 
 volumes:
   letsencrypt:
