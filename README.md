@@ -16,7 +16,7 @@ I'm currently running Emby directly on a Windows 10 host and the following appli
 [heimdall](https://hub.docker.com/r/linuxserver/heimdall "Heimdall")</br>
 [pi.hole](https://hub.docker.com/r/pihole/pihole "pi.hole")</br>
 [portainer](https://hub.docker.com/r/portainer/portainer "Portainer")</br>
-[traefik v1](https://hub.docker.com/_/traefik "Traefik")</br>
+[traefik](https://hub.docker.com/_/traefik "Traefik")</br>
 [watchtower](https://hub.docker.com/r/containrrr/watchtower "Watchtower")</br>
 #### Run this command to deploy the utility stack</br>
 `docker-compose -p utilities -f utilities.yml up -d --remove-orphans`</br>
