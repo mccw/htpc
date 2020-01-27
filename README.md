@@ -35,5 +35,5 @@ I'm currently running Emby directly on a Windows 10 host and the following appli
 ## TODO
 1. Add VPN
 2. Add torrent client
-3. NextCloud ??
-4. Traefik v2 ?
+3. NextCloud
+4. ~Traefik v2~
