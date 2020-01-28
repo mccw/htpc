@@ -134,16 +134,16 @@ services:
       - --entrypoints.websecure.address=:443
       - --providers.docker=true
       - --api.dashboard=true
-      - --certificatesresolvers.le.acme.email=mccolloughs@gmail.com
+      - --certificatesresolvers.le.acme.email=${EMAIL}
       - --certificatesresolvers.le.acme.storage=/etc/traefik/acme.json
       - --certificatesresolvers.le.acme.tlschallenge=true
+      - --log.level=ERROR
+      - --log.filePath=/etc/traefik/traefik.log
+      - --log.format=json
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - letsencrypt:/etc/traefik
       - shared:/shared
-    environment:
-      - CF_API_EMAIL=${CF_API_EMAIL}
-      - CF_API_KEY=${CF_API_KEY}
     networks:
       - traefik
     ports:
@@ -159,6 +159,7 @@ services:
       - "traefik.http.routers.http-catchall.entrypoints=web"
       - "traefik.http.routers.http-catchall.middlewares=redirect-to-https"
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.permanent=true"
       - "traefik.http.middlewares.auth.basicauth.users=${HTTP_USERNAME}:${HTTP_PASSWORD}"
 
   # Watchtower - docker image updater
