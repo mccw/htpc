@@ -144,6 +144,9 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - letsencrypt:/etc/traefik
       - shared:/shared
+    environment:
+      - CF_API_EMAIL=${CF_API_EMAIL}
+      - CF_API_KEY=${CF_API_KEY}
     networks:
       - traefik
     ports:
