@@ -2,6 +2,45 @@
 version: '3.7'
 services:
 
+  # Deluge VPN
+  arch-delugevpn:
+    image: binhex/arch-delugevpn
+    hostname: delugevpn
+    container_name: delugevpn
+    restart: unless-stopped
+    volumes:
+      - ${DOCKERDIR}/docker/deluge:/config
+      - ${DOCKERDIR}/downloads:/downloads
+      - ${DOCKERDIR}/docker/openvpn:/config/openvpn
+      - shared:/shared
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - VPN_ENABLED=yes
+      - VPN_USER=${VPN_USERNAME}
+      - VPN_PASS=${VPN_PASSWORD}
+      - VPN_REMOTE=${VPN_REMOTE}
+      - VPN_PORT=1198
+      - VPN_PROTOCOL=udp
+      - VPN_DEVICE_TYPE=tun
+      - VPN_PROV=${VPN_PROVIDER}
+      - STRONG_CERTS=no
+      - ENABLE_PRIVOXY=yes
+      - STRICT_PORT_FORWARD=yes
+      - LAN_NETWORK=${CIDR_ADDRESS}
+      - DEBUG=false
+    networks:
+      - traefik
+    labels:
+      - "traefik.http.routers.deluge.rule=Host(`deluge.${HOSTNAME}`)"
+      - "traefik.http.routers.deluge.tls=true"
+      - "traefik.http.routers.deluge.tls.certresolver=le"
+      - "traefik.http.routers.deluge.entrypoints=websecure"
+      - "traefik.http.services.deluge.loadbalancer.server.port=8112"
+
   # NZBHydra2 - Meta search for NZB News Indexers
   nzbhydra2:
     image: linuxserver/hydra2:latest
