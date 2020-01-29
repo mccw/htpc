@@ -12,6 +12,7 @@ I'm currently running Emby directly on a Windows 10 host and the following appli
 
 ### Utilities
 [ddclient](https://hub.docker.com/r/linuxserver/ddclient "ddclient")</br>
+[delugevpn](https://hub.docker.com/r/binhex/arch-delugevpn/ "delugevpn")</br>
 [duplicati](https://hub.docker.com/r/linuxserver/duplicati "Duplicati")</br>
 [heimdall](https://hub.docker.com/r/linuxserver/heimdall "Heimdall")</br>
 [pi.hole](https://hub.docker.com/r/pihole/pihole "pi.hole")</br>
