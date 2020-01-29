@@ -133,13 +133,15 @@ services:
       - --entrypoints.web.address=:80
       - --entrypoints.websecure.address=:443
       - --providers.docker=true
+      - --providers.file.filename=/etc/traefik/files.yml
+      - --providers.file.watch=true
       - --api.dashboard=true
       - --certificatesresolvers.le.acme.email=${EMAIL}
       - --certificatesresolvers.le.acme.storage=/etc/traefik/acme.json
       - --certificatesresolvers.le.acme.tlschallenge=true
-      - --log.level=ERROR
+      - --log.level=DEBUG
       - --log.filePath=/etc/traefik/traefik.log
-      - --log.format=json
+      - --serversTransport.insecureSkipVerify=true
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - letsencrypt:/etc/traefik
