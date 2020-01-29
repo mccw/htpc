@@ -1,0 +1,25 @@
+entrypoints:
+    websecure:
+      address: ":443"
+
+  cerificatesResolvers:
+    le:
+      acme:
+        email: ${EMAIL}
+        storage: "/etc/traefik/acme.json"
+        tlsChallenge: true
+
+  http:
+      routers:
+        emby:
+          rule: "Host(`emby.${HOSTNAME}`)"
+          service: emby
+          entrypoints: websecure
+          tls:
+            certResolver: "le"
+
+      services:
+        emby:
+          loadBalancer:
+            servers:
+              - url: "{$EMBY_IP_ADDRESS:PORT}"
