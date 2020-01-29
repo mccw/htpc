@@ -33,7 +33,7 @@ I'm currently running Emby directly on a Windows 10 host and the following appli
 `docker-compose -p htpc -f htpc.yml up -d --remove-orphans`  
 
 ## TODO
-1. Add VPN
-2. Add torrent client
+1. ~Add VPN~
+2. ~Add torrent client~
 3. NextCloud
 4. ~Traefik v2~
