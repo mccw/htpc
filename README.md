@@ -25,6 +25,7 @@ I'm currently running Emby directly on a Windows 10 host and the following appli
 ---
 
 ### HTPC
+[jackett](https://hub.docker.com/r/linuxserver/jackett/ "Jackett")</br>
 [nzbHydra2](https://hub.docker.com/r/linuxserver/hydra2 "NZBHydra2")</br>
 [ombi](https://hub.docker.com/r/linuxserver/ombi "Ombi")</br>
 [radarr](https://hub.docker.com/r/linuxserver/radarr "Radarr")</br>
