@@ -2,6 +2,30 @@
 version: '3.7'
 services:
 
+  # Jackett -
+  jackett:
+    image: linuxserver/jackett
+    init: true
+    hostname: jackett
+    container_name: jackett
+    restart: unless-stopped
+    volumes:
+      - ${DOCKERDIR}/docker/jackett:/config
+      - ${DOCKERDIR}/downloads:/downloads
+      - shared:/shared
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    networks:
+      - traefik
+    labels:
+      - "traefik.http.routers.jackett.rule=Host(`jackett.${HOSTNAME}`)"
+      - "traefik.http.routers.jackett.tls=true"
+      - "traefik.http.routers.jackett.tls.certresolver=le"
+      - "traefik.http.routers.jackett.entrypoints=websecure"
+      - "traefik.http.services.jackett.loadbalancer.server.port=9117"
+
   # NZBHydra2 - Meta search for NZB News Indexers
   nzbhydra2:
     image: linuxserver/hydra2:latest
