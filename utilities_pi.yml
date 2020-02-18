@@ -2,41 +2,6 @@
 version: '3.7'
 services:
 
-  # # AdGuard Home
-  # adguard-home:
-  #   image: adguard/adguardhome
-  #   init: true
-  #   hostname: adguard
-  #   container_name: adguard-home
-  #   restart: always
-  #   cap_add:
-  #     - NET_ADMIN
-  #   volumes:
-  #     - ${DOCKERDIR}/docker/adguard-home/work:/opt/adguardhome/work
-  #     - ${DOCKERDIR}/docker/adguard-home/conf:/opt/adguardhome/conf
-  #   environment:
-  #     - PUID=${PUID}
-  #     - PGID=${PGID}
-  #     - TZ=${TZ}
-  #     - DNS1='127.0.0.1'
-  #     - DNS2='1.1.1.1'
-  #   ports:
-  #     - '53:53/tcp'
-  #     - '53:53/udp'
-  #     - '67:67/udp'
-  #     - '8053:80/tcp'
-  #     - '853:853/tcp'
-  #     - '3000:3000/tcp'
-  #   networks:
-  #     - traefik
-  #   labels:
-  #     - "traefik.http.routers.adguard.rule=Host(`adguard.${HOSTNAME}`)"
-  #     - "traefik.http.routers.adguard.tls=true"
-  #     - "traefik.http.routers.adguard.tls.certresolver=le"
-  #     - "traefik.http.routers.adguard.entrypoints=websecure"
-  #     - "traefik.http.services.adguard.loadbalancer.server.port=3000"
-
-
   # ddclient - keep ddns updated
   ddclient:
     image: linuxserver/ddclient
@@ -45,53 +10,13 @@ services:
     container_name: ddclient
     restart: unless-stopped
     volumes:
-      - ${DOCKERDIR}/docker/ddclient:/config
-      - shared:/shared
+      - ${USBDIR}/docker/ddclient:/config
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
     networks:
       - utilities
-
-  # Deluge VPN
-  # arch-delugevpn:
-  #   image: binhex/arch-delugevpn
-  #   hostname: delugevpn
-  #   container_name: delugevpn
-  #   restart: unless-stopped
-  #   volumes:
-  #     - ${DOCKERDIR}/docker/deluge:/config
-  #     - ${DOCKERDIR}/downloads:/downloads
-  #     - ${DOCKERDIR}/docker/openvpn:/config/openvpn
-  #     - shared:/shared
-  #   cap_add:
-  #     - NET_ADMIN
-  #   environment:
-  #     - PUID=${PUID}
-  #     - PGID=${PGID}
-  #     - TZ=${TZ}
-  #     - VPN_ENABLED=yes
-  #     - VPN_USER=${VPN_USERNAME}
-  #     - VPN_PASS=${VPN_PASSWORD}
-  #     # - VPN_REMOTE=${VPN_REMOTE}
-  #     - VPN_PORT=1198
-  #     - VPN_PROTOCOL=udp
-  #     - VPN_DEVICE_TYPE=tun
-  #     - VPN_PROV=${VPN_PROVIDER}
-  #     - STRONG_CERTS=no
-  #     - ENABLE_PRIVOXY=yes
-  #     - STRICT_PORT_FORWARD=yes
-  #     - LAN_NETWORK=${CIDR_ADDRESS}
-  #     - DEBUG=false
-  #   networks:
-  #     - traefik
-  #   labels:
-  #     - "traefik.http.routers.deluge.rule=Host(`deluge.${HOSTNAME}`)"
-  #     - "traefik.http.routers.deluge.tls=true"
-  #     - "traefik.http.routers.deluge.tls.certresolver=le"
-  #     - "traefik.http.routers.deluge.entrypoints=websecure"
-  #     - "traefik.http.services.deluge.loadbalancer.server.port=8112"
 
   # duplicati - store backups online with strong encryption
   duplicati:
@@ -101,10 +26,9 @@ services:
     container_name: duplicati
     restart: unless-stopped
     volumes:
-      - ${DOCKERDIR}/docker/duplicati:/config
-      - ${DOCKERDIR}/docker/backups:/backups
-      - ${DOCKERDIR}/docker:/source
-      - shared:/shared
+      - ${USBDIR}/docker/duplicati:/config
+      - ${USBDIR}/docker/backups:/backups
+      - ${USBDIR}/docker:/source
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -126,7 +50,7 @@ services:
     container_name: heimdall
     restart: unless-stopped
     volumes:
-      - ${DOCKERDIR}/docker/heimdall:/config
+      - ${USBDIR}/docker/heimdall:/config
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -140,43 +64,6 @@ services:
       - "traefik.http.routers.dashboard.entrypoints=websecure"
       - "traefik.http.services.dashboard.loadbalancer.server.port=80"
 
-  # PiHole - network ad blocker
-  # pihole:
-  #   image: pihole/pihole:latest
-  #   init: true
-  #   hostname: pihole
-  #   container_name: pihole
-  #   domainname: docker
-  #   restart: unless-stopped
-  #   volumes:
-  #     - ${DOCKERDIR}/docker/pihole:/etc/pihole
-  #     - ${DOCKERDIR}/docker/pihole/pihole.log:/var/log/pihole.log
-  #     - ${DOCKERDIR}/docker/pihole/dnsmasq.d:/etc/dnsmasq.d
-  #   environment:
-  #     - PROXY_LOCATION=pihole
-  #     - VIRTUAL_HOST=pihole.${HOSTNAME}
-  #     - VIRTUAL_PORT=80
-  #     - PUID=${PUID}
-  #     - PGID=${PGID}
-  #     - TZ=${TZ}
-  #     - WEBPASSWORD=${HTTP_PASSWORD}
-  #     - DNS1='1.1.1.1'
-  #     - DNS2='1.0.0.1'
-  #   networks:
-  #     traefik:
-  #   cap_add:
-  #     - NET_ADMIN
-  #   ports:
-  #     - '53:53/udp'
-  #     - '53:53/tcp'
-  #     - '8043:80/tcp'
-  #   labels:
-  #     - "traefik.http.routers.pihole.rule=Host(`pihole.${HOSTNAME}`)"
-  #     - "traefik.http.routers.pihole.tls=true"
-  #     - "traefik.http.routers.pihole.tls.certresolver=le"
-  #     - "traefik.http.routers.pihole.entrypoints=websecure"
-  #     - "traefik.http.services.pihole.loadbalancer.server.port=80"
-
   # Portainer - WebUI for Containers
   portainer:
     image: portainer/portainer
@@ -187,8 +74,7 @@ services:
     command: -H unix:///var/run/docker.sock
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ${DOCKERDIR}/docker/portainer/data:/data
-      - shared:/shared
+      - ${USBDIR}/docker/portainer/data:/data
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -224,8 +110,7 @@ services:
       - --serversTransport.insecureSkipVerify=true
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - letsencrypt:/etc/traefik
-      - shared:/shared
+      - ${USBDIR}/docker/traefik:/etc/traefik
     environment:
       - CF_API_EMAIL=${CF_API_EMAIL}
       - CF_API_KEY=${CF_API_KEY}
@@ -257,8 +142,7 @@ services:
     command: --cleanup
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ${DOCKERDIR}/docker/watchtower/data:/data
-      - shared:/shared
+      - ${USBDIR}/docker/watchtower/data:/data
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -277,8 +161,3 @@ networks:
     ipam:
       config:
         - subnet: 172.19.0.0/16
-
-volumes:
-  letsencrypt:
-  shared:
-    name: shared

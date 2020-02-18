@@ -2,30 +2,6 @@
 version: '3.7'
 services:
 
-  # Jackett -
-  jackett:
-    image: linuxserver/jackett
-    init: true
-    hostname: jackett
-    container_name: jackett
-    restart: unless-stopped
-    volumes:
-      - ${DOCKERDIR}/docker/jackett:/config
-      - ${DOCKERDIR}/downloads:/downloads
-      - shared:/shared
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-    networks:
-      - traefik
-    labels:
-      - "traefik.http.routers.jackett.rule=Host(`jackett.${HOSTNAME}`)"
-      - "traefik.http.routers.jackett.tls=true"
-      - "traefik.http.routers.jackett.tls.certresolver=le"
-      - "traefik.http.routers.jackett.entrypoints=websecure"
-      - "traefik.http.services.jackett.loadbalancer.server.port=9117"
-
   # NZBHydra2 - Meta search for NZB News Indexers
   nzbhydra2:
     image: linuxserver/hydra2:latest
@@ -33,9 +9,8 @@ services:
     container_name: nzbhydra
     restart: unless-stopped
     volumes:
-      - ${DOCKERDIR}/docker/nzbhydra:/config
-      - ${DOCKERDIR}/downloads:/downloads
-      - shared:/shared
+      - ${USBDIR}/docker/nzbhydra:/config
+      - ${USBDIR}/downloads:/downloads
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -49,28 +24,6 @@ services:
       - "traefik.http.routers.nzbhydra.entrypoints=websecure"
       - "traefik.http.services.nzbhydra.loadbalancer.server.port=5076"
 
-  # Ombi - Show Requestor
-  ombi:
-    image: linuxserver/ombi:latest
-    hostname: ombi
-    container_name: ombi
-    restart: unless-stopped
-    volumes:
-      - ${DOCKERDIR}/docker/ombi:/config
-      - shared:/shared
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-    networks:
-      - traefik
-    labels:
-      - "traefik.http.routers.ombi.rule=Host(`ombi.${HOSTNAME}`)"
-      - "traefik.http.routers.ombi.tls=true"
-      - "traefik.http.routers.ombi.tls.certresolver=le"
-      - "traefik.http.routers.ombi.entrypoints=websecure"
-      - "traefik.http.services.ombi.loadbalancer.server.port=3579"
-
   # Radarr – Movie Download and Management
   radarr:
     image: linuxserver/radarr:latest
@@ -78,10 +31,9 @@ services:
     hostname: radarr
     restart: unless-stopped
     volumes:
-      - ${DOCKERDIR}/docker/radarr:/config
-      - ${DOCKERDIR}/downloads:/downloads
-      - ${DATADIR}/My Videos:/movies
-      - shared:/shared
+      - ${USBDIR}/docker/radarr:/config
+      - ${USBDIR}/downloads:/downloads
+      - ${DATADIR}/movies:/movies
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -102,9 +54,8 @@ services:
     hostname: sabnzbd
     restart: unless-stopped
     volumes:
-      - ${DOCKERDIR}/docker/sabnzbd:/config
-      - ${DOCKERDIR}/downloads:/downloads
-      - shared:/shared
+      - ${USBDIR}/docker/sabnzbd:/config
+      - ${USBDIR}/downloads:/downloads
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -125,10 +76,9 @@ services:
     hostname: sonarr
     restart: unless-stopped
     volumes:
-      - ${DOCKERDIR}/docker/sonarr:/config
-      - ${DOCKERDIR}/downloads:/downloads
-      - ${DATADIR}/My TV:/tv
-      - shared:/shared
+      - ${USBDIR}/docker/sonarr:/config
+      - ${USBDIR}/downloads:/downloads
+      - ${DATADIR}/tv:/tv
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -148,7 +98,3 @@ networks:
     ipam:
       config:
         - subnet: 172.18.0.0/16
-
-volumes:
-  shared:
-    name: shared
