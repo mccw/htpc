@@ -14,6 +14,7 @@ I'm currently running Emby directly on a Pasberry Pi 4 4GB host and the followin
 [ddclient](https://hub.docker.com/r/linuxserver/ddclient "ddclient")</br>
 [duplicati](https://hub.docker.com/r/linuxserver/duplicati "Duplicati")</br>
 [heimdall](https://hub.docker.com/r/linuxserver/heimdall "Heimdall")</br>
+[ombi](https://hub.docker.com/r/linuxserver/ombi "Ombi")</br>
 [portainer](https://hub.docker.com/r/portainer/portainer "Portainer")</br>
 [traefik](https://hub.docker.com/_/traefik "Traefik")</br>
 [watchtower](https://hub.docker.com/r/containrrr/watchtower "Watchtower")</br>
