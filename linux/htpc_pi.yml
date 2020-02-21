@@ -61,7 +61,8 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     networks:
-      - traefik
+      traefik:
+        ipv4_address: 172.18.0.9
     labels:
       - "traefik.http.routers.sabnzbd.rule=Host(`sabnzbd.${HOSTNAME}`)"
       - "traefik.http.routers.sabnzbd.tls=true"
