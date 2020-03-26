@@ -2,6 +2,7 @@
 version: '3.7'
 services:
 
+
   # NZBHydra2 - Meta search for NZB News Indexers
   nzbhydra2:
     image: linuxserver/hydra2:latest
