@@ -20,15 +20,15 @@ services:
 
   # duplicati - store backups online with strong encryption
   duplicati:
-    image: linuxserver/duplicati
+    image: linuxserver/duplicati:development
     init: true
     hostname: duplicati
     container_name: duplicati
     restart: unless-stopped
     volumes:
       - ${USBDIR}/docker/duplicati:/config
-      - ${USBDIR}/docker/backups:/backups
-      - ${USBDIR}/docker:/source
+      - ${USBDIR}/docker:/docker
+      - /mnt/e/backups/pi:/backups
       - /home/pi:/home/pi
     environment:
       - PUID=${PUID}
@@ -128,7 +128,7 @@ services:
       - --certificatesresolvers.le.acme.email=${EMAIL}
       - --certificatesresolvers.le.acme.storage=/etc/traefik/acme.json
       - --certificatesresolvers.le.acme.tlschallenge=true
-      - --log.level=DEBUG
+      - --log.level=INFO
       - --log.filePath=/etc/traefik/traefik.log
       - --serversTransport.insecureSkipVerify=true
     volumes:
