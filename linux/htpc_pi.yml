@@ -4,7 +4,7 @@ services:
 
   # NZBHydra2 - Meta search for NZB News Indexers
   nzbhydra2:
-    image: linuxserver/hydra2:latest
+    image: linuxserver/nzbhydra2:latest
     hostname: nzbhydra
     container_name: nzbhydra
     restart: unless-stopped
