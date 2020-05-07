@@ -24,7 +24,7 @@ I'm currently running Emby directly on a Pasberry Pi 4 4GB host and the followin
 ---
 
 ### HTPC
-[nzbHydra2](https://hub.docker.com/r/linuxserver/hydra2 "NZBHydra2")</br>
+[nzbHydra2](https://hub.docker.com/r/linuxserver/nzbhydra2 "NZBHydra2")</br>
 [radarr](https://hub.docker.com/r/linuxserver/radarr "Radarr")</br>
 [SABnzbd](https://hub.docker.com/r/linuxserver/sabnzbd "SABnzbd")</br>
 [sonarr](https://hub.docker.com/r/linuxserver/sonarr "Sonarr")</br>
