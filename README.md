@@ -5,8 +5,8 @@ I'm currently running Emby directly on a Pasberry Pi 4 4GB host and the followin
 
 | Application | Version | Branch |
 | :---: | :---: | :---: |
-| Linux pi01 | 4.19.97-v7l+ | armv7l |
-| Docker CE | 19.03.8 build afacb8b | Latest |
+| Linux pi01 | 4.19.118-v7l+ #1311 | armv7l |
+| Docker CE | 19.03.10, build 9424aea | Latest |
 
 ## Deploy two stacks using docker-compose
 
@@ -24,7 +24,7 @@ I'm currently running Emby directly on a Pasberry Pi 4 4GB host and the followin
 ---
 
 ### HTPC
-[nzbHydra2](https://hub.docker.com/r/linuxserver/hydra2 "NZBHydra2")</br>
+[nzbHydra2](https://hub.docker.com/r/linuxserver/nzbhydra2 "NZBHydra2")</br>
 [radarr](https://hub.docker.com/r/linuxserver/radarr "Radarr")</br>
 [SABnzbd](https://hub.docker.com/r/linuxserver/sabnzbd "SABnzbd")</br>
 [sonarr](https://hub.docker.com/r/linuxserver/sonarr "Sonarr")</br>
