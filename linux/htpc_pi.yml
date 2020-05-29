@@ -62,7 +62,7 @@ services:
       - TZ=${TZ}
     networks:
       traefik:
-        ipv4_address: 172.18.0.9
+        ipv4_address: 172.18.0.10
     labels:
       - "traefik.http.routers.sabnzbd.rule=Host(`sabnzbd.${HOSTNAME}`)"
       - "traefik.http.routers.sabnzbd.tls=true"
