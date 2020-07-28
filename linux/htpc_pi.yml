@@ -26,7 +26,7 @@ services:
 
   # Radarr – Movie Download and Management
   radarr:
-    image: linuxserver/radarr:latest
+    image: linuxserver/radarr:preview
     container_name: radarr
     hostname: radarr
     restart: unless-stopped
