@@ -18,31 +18,6 @@ services:
     networks:
       - utilities
 
-  # duplicati - store backups online with strong encryption
-  duplicati:
-    image: linuxserver/duplicati:development
-    init: true
-    hostname: duplicati
-    container_name: duplicati
-    restart: unless-stopped
-    volumes:
-      - ${USBDIR}/docker/duplicati:/config
-      - ${USBDIR}/docker:/docker
-      - /mnt/e/backups/pi:/backups
-      - /home/pi:/home/pi
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-    networks:
-      - traefik
-    labels:
-      - "traefik.http.routers.backup.rule=Host(`backup.${HOSTNAME}`)"
-      - "traefik.http.routers.backup.tls=true"
-      - "traefik.http.routers.backup.tls.certresolver=le"
-      - "traefik.http.routers.backup.entrypoints=websecure"
-      - "traefik.http.services.backup.loadbalancer.server.port=8200"
-
   # Heimdall - Application dashboard
   heimdall:
     image: linuxserver/heimdall
@@ -127,7 +102,6 @@ services:
       - --api.dashboard=true
       - --certificatesresolvers.le.acme.email=${EMAIL}
       - --certificatesresolvers.le.acme.storage=/etc/traefik/acme.json
-      # - --certificatesresolvers.le.acme.tlschallenge=true
       - --certificatesresolvers.le.acme.dnschallenge=true
       - --certificatesresolvers.le.acme.dnschallenge.delaybeforecheck=0
       - --certificatesresolvers.le.acme.dnschallenge.provider=cloudflare
@@ -150,7 +124,6 @@ services:
     labels:
       - "traefik.http.routers.traefik.rule=Host(`traefik.${HOSTNAME}`)"
       - "traefik.http.routers.traefik.service=api@internal"
-      #- "traefik.http.routers.traefik.middlewares=auth"
       - "traefik.http.routers.traefik.tls.certresolver=le"
       - "traefik.http.routers.traefik.entrypoints=websecure"
       - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
@@ -158,7 +131,6 @@ services:
       - "traefik.http.routers.http-catchall.middlewares=redirect-to-https"
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.permanent=true"
-      # - "traefik.http.middlewares.auth.basicauth.users=${HTTP_USERNAME}:${HTTP_PASSWORD}"
 
   # Watchtower - docker image updater
   watchtower:
