@@ -17,6 +17,8 @@ services:
       - TZ=${TZ}
     networks:
       - utilities
+    labels:
+      - "traefik.enable=false"
 
   # Heimdall - Application dashboard
   heimdall:
