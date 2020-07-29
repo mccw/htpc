@@ -7,6 +7,6 @@ jobs:
     steps:
     - uses: actions/checkout@main
     - name: yaml-lint
-      uses: ibiqlik/action-yamllint@main
+      uses: ibiqlik/action-yamllint@master
       with:
         file_or_dir: windows/*.yml linux/*i.yml traefik_v1/*.yml
