@@ -5,7 +5,7 @@ I'm currently running Emby directly on a Pasberry Pi 4 4GB host and the followin
 
 | Application | Version | Branch |
 | :---: | :---: | :---: |
-| Linux pi01 | 5.4.51-v7l+ #1327 | armv7l |
+| Linux pi01 | 5.4.51-v7l+ #1333 | armv7l |
 | Docker CE | 19.03.12, build 48a6621 | Latest |
 
 ## Deploy two stacks using docker-compose
