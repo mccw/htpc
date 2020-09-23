@@ -20,6 +20,28 @@ services:
     labels:
       - "traefik.enable=false"
 
+  # EmbyStat - Collect Emby Statistics
+  enbystat:
+    image: linuxserver/embystat
+    init: true
+    hostname: embystat
+    container_name: embystat
+    restart: unless-stopped
+    volumes:
+      - ${USBDIR}/docker/embystat:/config
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    networks:
+      - traefik
+    labels:
+      - "traefik.http.routers.embystat.rule=Host(`embystat.${HOSTNAME}`)"
+      - "traefik.http.routers.embystat.tls=true"
+      - "traefik.http.routers.embystat.tls.certresolver=le"
+      - "traefik.http.routers.embystat.entrypoints=websecure"
+      - "traefik.http.services.embystat.loadbalancer.server.port=6555"
+
   # Heimdall - Application dashboard
   heimdall:
     image: linuxserver/heimdall
