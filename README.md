@@ -17,7 +17,6 @@ I'm currently running Emby directly on a Pasberry Pi 4 4GB host and the followin
 [ombi](https://hub.docker.com/r/linuxserver/ombi "Ombi")</br>
 [portainer](https://hub.docker.com/r/portainer/portainer "Portainer")</br>
 [traefik](https://hub.docker.com/_/traefik "Traefik")</br>
-[watchtower](https://hub.docker.com/r/containrrr/watchtower "Watchtower")</br>
 #### Run this command to deploy the utility stack</br>
 `docker-compose -p utilities -f utilities_pi.yml up -d --remove-orphans`</br>
 
