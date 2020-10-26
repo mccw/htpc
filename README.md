@@ -5,14 +5,13 @@ I'm currently running Emby directly on a Pasberry Pi 4 4GB host and the followin
 
 | Application | Version | Branch |
 | :---: | :---: | :---: |
-| Linux pi01 | 5.4.51-v7l+ #1333 | armv7l |
+| Linux pi01 | 5.4.72-v7+ #1356 | armv7l |
 | Docker CE | 19.03.13, build 4484c46 | Latest |
 
 ## Deploy two stacks using docker-compose
 
 ### Utilities
 [ddclient](https://hub.docker.com/r/linuxserver/ddclient "ddclient")</br>
-[embystat](https://hub.docker.com/r/linuxserver/embystat "embystat")</br> 
 [heimdall](https://hub.docker.com/r/linuxserver/heimdall "Heimdall")</br>
 [ombi](https://hub.docker.com/r/linuxserver/ombi "Ombi")</br>
 [portainer](https://hub.docker.com/r/portainer/portainer "Portainer")</br>
