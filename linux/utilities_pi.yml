@@ -48,7 +48,7 @@ services:
     init: true
     hostname: nextcloud
     container_name: nextcloud
-    restart: unless-stopped
+    restart: always
     volumes:
       - ${USBDIR}/docker/nextcloud/config:/config
       - ${USBDIR}/docker/nextcloud/data:/data
@@ -56,23 +56,26 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
-    ports:
-      - 9443:443
+      - NEXTCLOUD_TRUSTED_DOMAINS=192.168.1.250 nextcloud.scottmccollough.net
+      - OVERWRITEPROTOCOL=https
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_HOST=${MYSQL_HOST}
+      - REDIS_HOST=${REDIS_HOST}
+    depends_on:
+      - mariadb
+      - redis
+    networks:
+      - traefik
     labels:
-      - traefik.enable=true
-      - traefik.http.routers.nextcloud.entrypoints=websecure
-      - traefik.http.routers.nextcloud.rule=Host(`dashboard.${HOSTNAME}`)
-      - traefik.http.routers.nextcloud.tls=true
-      - traefik.http.routers.nextcloud.tls.certresolver=le
-      - traefik.http.routers.nextcloud.service=nextcloud
-      - traefik.http.routers.nextcloud.middlewares=nextcloud-regex,nextcloud-headers
-      - traefik.http.services.nextcloud.loadbalancer.server.port=443
-      - traefik.http.services.nextcloud.loadbalancer.server.scheme=https
-      - traefik.http.middlewares.nextcloud-regex.redirectregex.regex=https://(.*)/.well-known/(card|cal)dav
-      - traefik.http.middlewares.nextcloud-regex.redirectregex.replacement=https://$$1/remote.php/dav/
-      - traefik.http.middlewares.nextcloud-regex.redirectregex.permanent=true
-      - traefik.http.middlewares.nextcloud-headers.headers.customFrameOptionsValue=SAMEORIGIN
-      - traefik.http.middlewares.nextcloud-headers.headers.stsSeconds=15552000
+      - "traefik.tcp.routers.nextcloud-tcp.entrypoints=websecure"
+      - "traefik.tcp.routers.nextcloud-tcp.rule=HostSNI(`nextcloud.${HOSTNAME}`)"
+      - "traefik.tcp.routers.nextcloud-tcp.tls=true"
+      - "traefik.tcp.routers.nextcloud-tcp.tls.certresolver=le"
+      - "traefik.tcp.routers.nextcloud-tcp.tls.passthrough=true"
+      - "traefik.tcp.routers.nextcloud-tcp.service=nextcloud"
+      - "traefik.tcp.services.nextcloud.loadbalancer.server.port=443"      
 
   # mariaDB      
   mariadb:
@@ -80,19 +83,23 @@ services:
     init: true
     hostname: mariadb
     container_name: mariadb
-    restart: unless-stopped
+    restart: always
     volumes:
       - ${USBDIR}/docker/mariadb/config:/config
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
-      - MYSQL_ROOT_PASSWORD=ChangeMePlease
-      - MYSQL_DATABASE=nextcloud
-      - MYSQL_USER=nextcloud
-      - MYSQL_PASSWORD=ChangeMeAlso
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     ports:
       - 3306:3306
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=false"
 
   # Ombi
   ombi:
@@ -140,13 +147,27 @@ services:
       - "traefik.http.routers.portainer.entrypoints=websecure"
       - "traefik.http.services.portainer.loadbalancer.server.port=9000"
 
+  # Redis
+  redis:
+    image: redis:alpine
+    init: true
+    hostname: redis
+    container_name: redis
+    restart: always
+    volumes:
+      - ${USBDIR}/docker/redis/data:/data
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=false"
+
   # Traefik v2 - reverse proxy for containers
   traefik:
     image: traefik:latest
     init: true
     hostname: traefik
     container_name: traefik
-    restart: unless-stopped
+    restart: always
     command:
       - --entrypoints.web.address=:80
       - --entrypoints.websecure.address=:443
@@ -185,26 +206,6 @@ services:
       - "traefik.http.routers.http-catchall.middlewares=redirect-to-https"
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.permanent=true"
-
-  # Watchtower - docker image updater
-  # watchtower:
-  #   image: containrrr/watchtower
-  #   init: true
-  #   hostname: watchtower
-  #   container_name: watchtower
-  #   restart: unless-stopped
-  #   command: --cleanup
-  #   volumes:
-  #     - /var/run/docker.sock:/var/run/docker.sock
-  #     - ${USBDIR}/docker/watchtower/data:/data
-  #   environment:
-  #     - PUID=${PUID}
-  #     - PGID=${PGID}
-  #     - TZ=${TZ}
-  #   networks:
-  #     - utilities
-  #   labels:
-  #     - "traefik.enable=false"
 
 networks:
   traefik:
