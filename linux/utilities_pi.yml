@@ -42,7 +42,7 @@ services:
       - "traefik.http.routers.dashboard.entrypoints=websecure"
       - "traefik.http.services.dashboard.loadbalancer.server.port=80"
 
-  # mariaDB      
+  # mariaDB
   mariadb:
     image: linuxserver/mariadb
     init: true
@@ -99,7 +99,7 @@ services:
       - "traefik.tcp.routers.nextcloud-tcp.tls.certresolver=le"
       - "traefik.tcp.routers.nextcloud-tcp.tls.passthrough=true"
       - "traefik.tcp.routers.nextcloud-tcp.service=nextcloud"
-      - "traefik.tcp.services.nextcloud.loadbalancer.server.port=443"      
+      - "traefik.tcp.services.nextcloud.loadbalancer.server.port=443"
 
   # Ombi
   ombi:
