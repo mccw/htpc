@@ -13,8 +13,11 @@ I'm currently running Emby directly on a Pasberry Pi 4 4GB host and the followin
 ### Utilities
 [ddclient](https://hub.docker.com/r/linuxserver/ddclient "ddclient")</br>
 [heimdall](https://hub.docker.com/r/linuxserver/heimdall "Heimdall")</br>
+[mariadb](https://hub.docker.com/_/mariadb "mariadb")</br>
+[NextCloud](https://hub.docker.com/_/nextcloud "NextCloud")</br>
 [ombi](https://hub.docker.com/r/linuxserver/ombi "Ombi")</br>
 [portainer](https://hub.docker.com/r/portainer/portainer "Portainer")</br>
+[redis](https://hub.docker.com/_/redis "redis")</br>
 [traefik](https://hub.docker.com/_/traefik "Traefik")</br>
 #### Run this command to deploy the utility stack</br>
 `docker-compose -p utilities -f utilities_pi.yml up -d --remove-orphans`</br>
@@ -30,5 +33,5 @@ I'm currently running Emby directly on a Pasberry Pi 4 4GB host and the followin
 `docker-compose -p htpc -f htpc_pi.yml up -d --remove-orphans`  
 
 ## TODO
-1. NextCloud - is there a pi version?
+1. ~NextCloud~
 2. ~Traefik v2~
