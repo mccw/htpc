@@ -42,65 +42,6 @@ services:
       - "traefik.http.routers.dashboard.entrypoints=websecure"
       - "traefik.http.services.dashboard.loadbalancer.server.port=80"
 
-  # mariaDB
-  mariadb:
-    image: linuxserver/mariadb
-    init: true
-    hostname: mariadb
-    container_name: mariadb
-    restart: always
-    volumes:
-      - ${USBDIR}/docker/mariadb/config:/config
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-    ports:
-      - 3306:3306
-    networks:
-      - traefik
-    labels:
-      - "traefik.enable=false"
-
-  # NextCloud
-  nextcloud:
-    image: linuxserver/nextcloud
-    init: true
-    hostname: nextcloud
-    container_name: nextcloud
-    restart: always
-    volumes:
-      - ${USBDIR}/docker/nextcloud/config:/config
-      - ${USBDIR}/docker/nextcloud/data:/data
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-      - NEXTCLOUD_TRUSTED_DOMAINS=192.168.1.250 nextcloud.scottmccollough.net
-      - OVERWRITEPROTOCOL=https
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_HOST=${MYSQL_HOST}
-      - REDIS_HOST=${REDIS_HOST}
-    depends_on:
-      - mariadb
-      - redis
-    networks:
-      - traefik
-    labels:
-      - "traefik.tcp.routers.nextcloud-tcp.entrypoints=websecure"
-      - "traefik.tcp.routers.nextcloud-tcp.rule=HostSNI(`nextcloud.${HOSTNAME}`)"
-      - "traefik.tcp.routers.nextcloud-tcp.tls=true"
-      - "traefik.tcp.routers.nextcloud-tcp.tls.certresolver=le"
-      - "traefik.tcp.routers.nextcloud-tcp.tls.passthrough=true"
-      - "traefik.tcp.routers.nextcloud-tcp.service=nextcloud"
-      - "traefik.tcp.services.nextcloud.loadbalancer.server.port=443"
-
   # Ombi
   ombi:
     image: linuxserver/ombi
@@ -146,20 +87,6 @@ services:
       - "traefik.http.routers.portainer.tls.certresolver=le"
       - "traefik.http.routers.portainer.entrypoints=websecure"
       - "traefik.http.services.portainer.loadbalancer.server.port=9000"
-
-  # Redis
-  redis:
-    image: redis:alpine
-    init: true
-    hostname: redis
-    container_name: redis
-    restart: always
-    volumes:
-      - ${USBDIR}/docker/redis/data:/data
-    networks:
-      - traefik
-    labels:
-      - "traefik.enable=false"
 
   # Traefik v2 - reverse proxy for containers
   traefik:
