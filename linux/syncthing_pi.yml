@@ -1,0 +1,26 @@
+  # Syncthing
+  syncthing:
+    image: ghcr.io/linuxserver/syncthing
+    init: true
+    hostname: syncthing
+    container_name: syncthing
+    restart: always
+    volumes:
+      - ${USBDIR}/docker/syncthing/config:/config
+      - ${USBDIR}/docker/syncthing/data1:/data1
+      - ${USBDIR}/docker/syncthing/data2:/data2
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    networks:
+      - traefik
+    ports:
+      - 22000:22000
+      - 21027:21027/udp
+    labels:
+      - "traefik.http.routers.syncthing.rule=Host(`sync.${HOSTNAME}`)"
+      - "traefik.http.routers.syncthing.tls=true"
+      - "traefik.http.routers.syncthing.tls.certresolver=le"
+      - "traefik.http.routers.syncthing.entrypoints=websecure"
+      - "traefik.http.services.syncthing.loadbalancer.server.port=8384"
