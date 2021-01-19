@@ -1,3 +1,7 @@
+---
+version: '3.7'
+services:
+
   # Syncthing
   syncthing:
     image: ghcr.io/linuxserver/syncthing
@@ -24,3 +28,4 @@
       - "traefik.http.routers.syncthing.tls.certresolver=le"
       - "traefik.http.routers.syncthing.entrypoints=websecure"
       - "traefik.http.services.syncthing.loadbalancer.server.port=8384"
+...

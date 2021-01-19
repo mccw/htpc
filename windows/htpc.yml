@@ -152,3 +152,4 @@ networks:
 volumes:
   shared:
     name: shared
+...

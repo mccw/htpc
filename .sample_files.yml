@@ -24,3 +24,4 @@ entrypoints:
           loadBalancer:
             servers:
               - url: "{$EMBY_IP_ADDRESS:PORT}"
+...
