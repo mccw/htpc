@@ -9,4 +9,4 @@ jobs:
     - name: yaml-lint
       uses: ibiqlik/action-yamllint@master
       with:
-        file_or_dir: windows/*.yml linux/*i.yml traefik_v1/*.yml
+        file_or_dir: windows/*.yml linux/*.yml traefik_v1/*.yml
