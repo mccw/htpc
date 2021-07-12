@@ -24,6 +24,28 @@ services:
       - "traefik.http.routers.nzbhydra.entrypoints=websecure"
       - "traefik.http.services.nzbhydra.loadbalancer.server.port=5076"
 
+  # Prowlarr - Index Manager
+  prowlarr:
+    image: ghcr.io/linuxserver/prowlarr:develop
+    hostname: prowlarr
+    container_name: prowlarr
+    restart: unless-stopped
+    volumes:
+      - ${USBDIR}/docker/prowlarr:/config
+      - ${USBDIR}/downloads:/downloads
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    networks:
+      - traefik
+    labels:
+      - "traefik.http.routers.prowlarr.rule=Host(`prowlarr.${HOSTNAME}`)"
+      - "traefik.http.routers.prowlarr.tls=true"
+      - "traefik.http.routers.prowlarr.tls.certresolver=le"
+      - "traefik.http.routers.prowlarr.entrypoints=websecure"
+      - "traefik.http.services.prowlarr.loadbalancer.server.port=9696"
+
   # Radarr – Movie Download and Management
   radarr:
     image: linuxserver/radarr:latest
@@ -49,7 +71,7 @@ services:
 
   # SABnzbd - Binary News Reader
   sabnzbd:
-    image: linuxserver/sabnzbd
+    image: linuxserver/sabnzbd:latest
     container_name: sabnzbd
     hostname: sabnzbd
     restart: unless-stopped
@@ -72,7 +94,7 @@ services:
 
   # Sonarr – TV Show Download and Management
   sonarr:
-    image: linuxserver/sonarr:preview
+    image: linuxserver/sonarr:latest
     container_name: sonarr
     hostname: sonarr
     restart: unless-stopped
