@@ -5,8 +5,8 @@ I'm currently running Emby directly on a Pasberry Pi 4 4GB host and the followin
 
 | Application | Version | Branch |
 | :---: | :---: | :---: |
-| Linux pi01 | 5.4.79-v7l+ #1373 | armv7l |
-| Docker CE | 20.10.2, build 2291f61 | Latest |
+| Linux pi01 | 5.10.17-v7l+ #1403 | armv7l |
+| Docker CE | 20.10.5, build 55c4c88 | Latest |
 
 ## Deploy three stacks using docker-compose
 
