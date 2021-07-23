@@ -44,7 +44,7 @@ services:
 
   # Ombi
   ombi:
-    image: linuxserver/ombi
+    image: ghcr.io/linuxserver/ombi
     init: true
     hostname: ombi
     container_name: ombi

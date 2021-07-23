@@ -2,28 +2,6 @@
 version: '3.7'
 services:
 
-  # NZBHydra2 - Meta search for NZB News Indexers
-  # nzbhydra2:
-  #   image: linuxserver/nzbhydra2:latest
-  #   hostname: nzbhydra
-  #   container_name: nzbhydra
-  #   restart: unless-stopped
-  #   volumes:
-  #     - ${USBDIR}/docker/nzbhydra:/config
-  #     - ${USBDIR}/downloads:/downloads
-  #   environment:
-  #     - PUID=${PUID}
-  #     - PGID=${PGID}
-  #     - TZ=${TZ}
-  #   networks:
-  #     - traefik
-  #   labels:
-  #     - "traefik.http.routers.nzbhydra.rule=Host(`nzbhydra.${HOSTNAME}`)"
-  #     - "traefik.http.routers.nzbhydra.tls=true"
-  #     - "traefik.http.routers.nzbhydra.tls.certresolver=le"
-  #     - "traefik.http.routers.nzbhydra.entrypoints=websecure"
-  #     - "traefik.http.services.nzbhydra.loadbalancer.server.port=5076"
-
   # Prowlarr - Index Manager
   prowlarr:
     image: ghcr.io/linuxserver/prowlarr:develop
