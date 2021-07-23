@@ -5,13 +5,13 @@ I'm currently running Emby directly on a Pasberry Pi 4 4GB host and the followin
 
 | Application | Version | Branch |
 | :---: | :---: | :---: |
-| Linux pi01 | 5.10.17-v7l+ #1403 | armv7l |
-| Docker CE | 20.10.5, build 55c4c88 | Latest |
+| Linux pi01 | 5.10.17-v7l+ #1414 | armv7l |
+| Docker CE | 20.10.7, build f0df350 | Latest |
 
 ## Deploy three stacks using docker-compose
 
 ### HTPC
-[nzbHydra2](https://hub.docker.com/r/linuxserver/nzbhydra2 "NZBHydra2")</br>
+[prowlarr](https://hub.docker.com/r/linuxserver/prowlarr "Prowlarr")</br>
 [radarr](https://hub.docker.com/r/linuxserver/radarr "Radarr")</br>
 [SABnzbd](https://hub.docker.com/r/linuxserver/sabnzbd "SABnzbd")</br>
 [sonarr](https://hub.docker.com/r/linuxserver/sonarr "Sonarr")</br>
