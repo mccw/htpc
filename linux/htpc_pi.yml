@@ -2,6 +2,29 @@
 version: '3.7'
 services:
 
+  # Lidarr - Music Manager
+  lidarr:
+    image: ghcr.io/linuxserver/lidarr
+    hostname: lidarr
+    container_name: lidarr
+    restart: unless-stopped
+    volumes:
+      - ${USBDIR}/docker/lidarr:/config
+      - ${DDIR}/music:/music
+      - ${USBDIR}/downloads:/downloads
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    networks:
+      - traefik
+    labels:
+      - "traefik.http.routers.lidarr.rule=Host(`lidarr.${HOSTNAME}`)"
+      - "traefik.http.routers.lidarr.tls=true"
+      - "traefik.http.routers.lidarr.tls.certresolver=le"
+      - "traefik.http.routers.lidarr.entrypoints=websecure"
+      - "traefik.http.services.lidarr.loadbalancer.server.port=8686"
+
   # Prowlarr - Index Manager
   prowlarr:
     image: ghcr.io/linuxserver/prowlarr:develop
