@@ -1,3 +1,4 @@
+---
 additionalArguments:
   - --providers.file.filename=/data/traefik-config.yaml
   - --entrypoints.websecure.http.tls.certresolver=cloudflare
@@ -32,3 +33,4 @@ volumes:
   - mountPath: /mnt/usb2/docker/helm/traefik/data
     name: traefik-config
     type: configMap
+...

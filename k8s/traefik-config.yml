@@ -28,3 +28,4 @@ data:
             stsPreload: true
             stsSeconds: 15552000
             customFrameOptionsValue: SAMEORIGIN
+...
