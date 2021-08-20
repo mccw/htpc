@@ -6,8 +6,8 @@ metadata:
   namespace: traefik
 type: Opaque
 stringData:
-  email: mccolloughs@gmail.com
-  apiKey: 214bb14dbe04e7f5b8557a4f2b8a1086c060c
+  email: ${CF_API_EMAIL}
+  apiKey: ${CF_API_KEY}
 ---
 apiVersion: v1
 kind: ConfigMap

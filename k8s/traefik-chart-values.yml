@@ -5,7 +5,7 @@ additionalArguments:
   - --entrypoints.websecure.http.tls.domains[0].main=scottmccollough.net
   - --entrypoints.websecure.http.tls.domains[0].sans=*.scottmccollough.net
   - --certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare
-  - --certificatesresolvers.cloudflare.acme.email=mccolloughs@gmail.com
+  - --certificatesresolvers.cloudflare.acme.email=${CF_API_EMAIL}
   - --certificatesresolvers.cloudflare.acme.dnschallenge.resolvers=1.1.1.1
   - --certificatesresolvers.cloudflare.acme.storage=/mnt/usb2/docker/helm/certs/acme.json
 ports:
