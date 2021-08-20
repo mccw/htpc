@@ -70,6 +70,29 @@ services:
       - "traefik.http.routers.radarr.entrypoints=websecure"
       - "traefik.http.services.radarr.loadbalancer.server.port=7878"
 
+  # Readarr - e-Book Manager
+  # readarr:
+  #   image: linuxserver/readarr:nightly
+  #   container_name: readarr
+  #   hostname: readarr
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ${USBDIR}/docker/readarr:/config
+  #     - ${DDIR}/eBooks:/books
+  #     - ${USBDIR}/downloads:/downloads
+  #   environment:
+  #     - PUID=${PUID}
+  #     - PGID=${PGID}
+  #     - TZ=${TZ}
+  #   networks:
+  #     - traefik
+  #   labels:
+  #     - "traefik.http.routers.readarr.rule=Host(`readarr.${HOSTNAME}`)"
+  #     - "traefik.http.routers.readarr.tls=true"
+  #     - "traefik.http.routers.readarr.tls.certresolver=le"
+  #     - "traefik.http.routers.readarr.entrypoints=websecure"
+  #     - "traefik.http.services.readarr.loadbalancer.server.port=8787"
+
   # SABnzbd - Binary News Reader
   sabnzbd:
     image: linuxserver/sabnzbd:latest

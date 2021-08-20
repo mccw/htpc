@@ -1,0 +1,53 @@
+---
+version: '3.7'
+services:
+
+  # Ghost = bloging software
+  ghost:
+    image: ghost
+    init: true
+    hostname: ghost
+    container_name: ghost
+    restart: unless-stopped
+    depends_on:
+      - db
+    volumes:
+      - ${USBDIR}/docker/ghost/config:/var/lib/ghost/content
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - url=https://blog.mccollough.me
+      - database__client=mysql
+      - database__connection__host=db
+      - database__connection__user=${MYSQL_USER}
+      - database__connection__password=${MYSQL_PASSWORD}
+      - database__connection__database=${MYSQL_DATABASE}
+    networks:
+      - traefik
+    labels:
+      - "traefik.http.routers.ghost.rule=Host(`blog.mccollough.me`)"
+      - "traefik.http.routers.ghost.tls=true"
+      - "traefik.http.routers.ghost.tls.certresolver=le"
+      - "traefik.http.routers.ghost.entrypoints=websecure"
+      - "traefik.http.services.ghost.loadbalancer.server.port=2368"
+
+  # mariadb
+  db:
+    image: linuxserver/mariadb
+    init: true
+    hostname: mariadb
+    container_name: mariadb
+    restart: unless-stopped
+    volumes:
+      - ${USBDIR}/docker/mariadb/config:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=false"
+...

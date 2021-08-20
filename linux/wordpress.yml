@@ -1,0 +1,52 @@
+---
+version: '3.7'
+services:
+
+  # mariadb
+  db:
+    image: linuxserver/mariadb
+    init: true
+    hostname: mariadb
+    container_name: mariadb
+    restart: unless-stopped
+    volumes:
+      - ${USBDIR}/docker/mariadb/config:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=false"
+
+  # wordpress = bloging software
+  wordpress:
+    image: wordpress
+    init: true
+    hostname: wordpress
+    container_name: wordpress
+    restart: unless-stopped
+    depends_on:
+      - db
+    volumes:
+      - ${USBDIR}/docker/wordpress/config:/var/www/html
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - ServerName=https://blog.mccollough.me
+      - WORDPRESS_DB_HOST=db:3306
+      - WORDPRESS_DB_USER=${MYSQL_USER}
+      - WORDPRESS_DB_PASSWORD=${MYSQL_PASSWORD}
+      - WORDPRESS_DB_NAME=${MYSQL_DATABASE}
+    networks:
+      - traefik
+    labels:
+      - "traefik.http.routers.wordpress.rule=Host(`blog.mccollough.me`)"
+      - "traefik.http.routers.wordpress.tls=true"
+      - "traefik.http.routers.wordpress.tls.certresolver=le"
+      - "traefik.http.routers.wordpress.entrypoints=websecure"
+      - "traefik.http.services.wordpress.loadbalancer.server.port=80"
+...
