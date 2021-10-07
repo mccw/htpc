@@ -1,0 +1,53 @@
+---
+version: '3.7'
+services:
+
+  # Grafana
+  grafana:
+    image: grafana/grafana:latest
+    init: true
+    hostname: grafana
+    container_name: grafana
+    restart: unless-stopped
+    user: '0'
+    volumes:
+    - ${USBDIR}/docker/grafana:/var/lib/grafana
+    - ${USBDIR}/docker/grafana:/etc/grafana
+    - ${USBDIR}/docker/grafana:/etc/grafana/provisioning/datasources
+    environment:
+      - TZ=${TZ}
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource,grafana-worldmap-panel,grafana-piechart-panel
+    networks:
+      - traefik
+    labels:
+      - "traefik.http.routers.grafana.rule=Host(`grafana.${HOSTNAME}`)"
+      - "traefik.http.routers.grafana.tls=true"
+      - "traefik.http.routers.grafana.tls.certresolver=le"
+      - "traefik.http.routers.grafana.entrypoints=websecure"
+      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+    links:
+      - prometheus
+
+  # Prometheus
+  prometheus:
+    image: prom/prometheus:latest
+    init: true
+    hostname: prometheus
+    container_name: prometheus
+    restart: unless-stopped
+    command: --web.enable-lifecycle  --config.file=/etc/prometheus/prometheus.yml
+    volumes:
+      - ${USBDIR}/docker/prometheus:/etc/prometheus
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    networks:
+      - traefik
+    labels:
+      - "traefik.http.routers.prometheus.rule=Host(`prometheus.${HOSTNAME}`)"
+      - "traefik.http.routers.prometheus.tls=true"
+      - "traefik.http.routers.prometheus.tls.certresolver=le"
+      - "traefik.http.routers.prometheus.entrypoints=websecure"
+      - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
+...

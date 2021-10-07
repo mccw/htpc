@@ -112,6 +112,11 @@ services:
       - --log.level=ERROR
       - --log.filePath=/etc/traefik/traefik.log
       - --serversTransport.insecureSkipVerify=true
+      - --pilot.token=63ed08d8-a26b-4823-845c-f9f71ea3b0be
+      - --accesslog.filepath=/etc/traefik/logs/access.log
+      - --metrics.prometheus=true
+      - --metrics.prometheus.entryPoint=metrics
+      - --entryPoints.metrics.address=:8082
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ${USBDIR}/docker/traefik:/etc/traefik
@@ -133,6 +138,10 @@ services:
       - "traefik.http.routers.http-catchall.middlewares=redirect-to-https"
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.permanent=true"
+      - "traefik.http.routers.metrics.tls.certresolver=le"
+      - "traefik.http.routers.metrics.entrypoints=websecure"
+      - "traefik.http.routers.metrics.rule=Host(`traefikmetrics.${HOSTNAME}`)"
+      - "traefik.http.services.metrics.loadbalancer.server.port=8082"
 
   # Watchtower - docker image updater
   watchtower:
