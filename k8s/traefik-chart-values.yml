@@ -1,4 +1,5 @@
 ---
+# lint test
 additionalArguments:
   - --providers.file.filename=/data/traefik-config.yaml
   - --entrypoints.websecure.http.tls.certresolver=cloudflare
