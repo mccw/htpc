@@ -15,18 +15,18 @@ services:
     - ${USBDIR}/docker/grafana:/etc/grafana
     - ${USBDIR}/docker/grafana:/etc/grafana/provisioning/datasources
     environment:
-      - TZ=${TZ}
-      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource,grafana-worldmap-panel,grafana-piechart-panel
+    - TZ=${TZ}
+    - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource,grafana-worldmap-panel,grafana-piechart-panel
     networks:
       - traefik
     labels:
-      - "traefik.http.routers.grafana.rule=Host(`grafana.${HOSTNAME}`)"
-      - "traefik.http.routers.grafana.tls=true"
-      - "traefik.http.routers.grafana.tls.certresolver=le"
-      - "traefik.http.routers.grafana.entrypoints=websecure"
-      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+    - "traefik.http.routers.grafana.rule=Host(`grafana.${HOSTNAME}`)"
+    - "traefik.http.routers.grafana.tls=true"
+    - "traefik.http.routers.grafana.tls.certresolver=le"
+    - "traefik.http.routers.grafana.entrypoints=websecure"
+    - "traefik.http.services.grafana.loadbalancer.server.port=3000"
     links:
-      - prometheus
+    - prometheus
 
   # Prometheus
   prometheus:
@@ -37,17 +37,17 @@ services:
     restart: unless-stopped
     command: --web.enable-lifecycle  --config.file=/etc/prometheus/prometheus.yml
     volumes:
-      - ${USBDIR}/docker/prometheus:/etc/prometheus
+    - ${USBDIR}/docker/prometheus:/etc/prometheus
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
+    - PUID=${PUID}
+    - PGID=${PGID}
+    - TZ=${TZ}
     networks:
-      - traefik
+    - traefik
     labels:
-      - "traefik.http.routers.prometheus.rule=Host(`prometheus.${HOSTNAME}`)"
-      - "traefik.http.routers.prometheus.tls=true"
-      - "traefik.http.routers.prometheus.tls.certresolver=le"
-      - "traefik.http.routers.prometheus.entrypoints=websecure"
-      - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
+    - "traefik.http.routers.prometheus.rule=Host(`prometheus.${HOSTNAME}`)"
+    - "traefik.http.routers.prometheus.tls=true"
+    - "traefik.http.routers.prometheus.tls.certresolver=le"
+    - "traefik.http.routers.prometheus.entrypoints=websecure"
+    - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
 ...
