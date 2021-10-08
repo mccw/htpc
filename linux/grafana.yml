@@ -16,7 +16,7 @@ services:
       - ${USBDIR}/docker/grafana:/etc/grafana/provisioning/datasources
     environment:
       - TZ=${TZ}
-      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource,grafana-worldmap-panel,grafana-piechart-panel
+      - GF_INSTALL_PLUGINS=grafana-simple-json-datasource
     networks:
       - traefik
     labels:
@@ -35,7 +35,8 @@ services:
     hostname: prometheus
     container_name: prometheus
     restart: unless-stopped
-    command: --web.enable-lifecycle  --config.file=/etc/prometheus/prometheus.yml
+    command: --web.enable-lifecycle `
+             --config.file=/etc/prometheus/prometheus.yml
     volumes:
       - ${USBDIR}/docker/prometheus:/etc/prometheus
     environment:
