@@ -112,7 +112,7 @@ services:
       - --log.level=ERROR
       - --log.filePath=/etc/traefik/traefik.log
       - --serversTransport.insecureSkipVerify=true
-      - --pilot.token=63ed08d8-a26b-4823-845c-f9f71ea3b0be
+      - --pilot.token=2928338b-5594-44d0-9517-c73cccacb7a3
       - --accesslog.filepath=/etc/traefik/logs/access.log
       #- --metrics.prometheus=true
       #- --metrics.prometheus.entryPoint=metrics
