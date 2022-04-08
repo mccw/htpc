@@ -43,8 +43,8 @@ services:
       - "traefik.http.services.dashboard.loadbalancer.server.port=80"
 
   # Overseerr
-  overseer:
-    image: lscr.io/linuxserver/overseerr
+  overseerr:
+    image: linuxserver/overseerr
     init: true
     hostname: overseerr
     container_name: overseerr
@@ -58,11 +58,12 @@ services:
     networks:
       - traefik
     labels:
-      - "traefik.http.routers.ombi.rule=Host(`overseerr.${HOSTNAME}`)"
-      - "traefik.http.routers.ombi.tls=true"
-      - "traefik.http.routers.ombi.tls.certresolver=le"
-      - "traefik.http.routers.ombi.entrypoints=websecure"
-      - "traefik.http.services.ombi.loadbalancer.server.port=5055"
+      - "traefik.http.routers.overseerr.rule=Host(`overseerr.${HOSTNAME}`)"
+      - "traefik.http.routers.overseerr.tls=true"
+      - "traefik.http.routers.overseerr.tls.certresolver=le"
+      - "traefik.http.routers.overseerr.entrypoints=websecure"
+      - "traefik.http.routers.overseerr.service=overseerr"
+      - "traefik.http.services.overseerr.loadbalancer.server.port=5055"
 
   # Ombi
   # ombi:
