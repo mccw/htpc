@@ -65,28 +65,6 @@ services:
       - "traefik.http.routers.overseerr.service=overseerr"
       - "traefik.http.services.overseerr.loadbalancer.server.port=5055"
 
-  # Ombi
-  # ombi:
-  #   image: ghcr.io/linuxserver/ombi
-  #   init: true
-  #   hostname: ombi
-  #   container_name: ombi
-  #   restart: unless-stopped
-  #   volumes:
-  #     - ${USBDIR}/docker/ombi/config:/config
-  #   environment:
-  #     - PUID=${PUID}
-  #     - PGID=${PGID}
-  #     - TZ=${TZ}
-  #   networks:
-  #     - traefik
-  #   labels:
-  #     - "traefik.http.routers.ombi.rule=Host(`ombi.${HOSTNAME}`)"
-  #     - "traefik.http.routers.ombi.tls=true"
-  #     - "traefik.http.routers.ombi.tls.certresolver=le"
-  #     - "traefik.http.routers.ombi.entrypoints=websecure"
-  #    - "traefik.http.services.ombi.loadbalancer.server.port=3579"
-
   # Portainer - WebUI for Containers
   portainer:
     image: portainer/portainer-ce
@@ -137,9 +115,6 @@ services:
       - --serversTransport.insecureSkipVerify=true
       - --pilot.token=892336b1-3723-44f5-83d4-f6d1c6773723
       - --accesslog.filepath=/etc/traefik/logs/access.log
-      #- --metrics.prometheus=true
-      #- --metrics.prometheus.entryPoint=metrics
-      #- --entryPoints.metrics.address=:8082
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ${USBDIR}/docker/traefik:/etc/traefik
@@ -161,10 +136,6 @@ services:
       - "traefik.http.routers.http-catchall.middlewares=redirect-to-https"
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.permanent=true"
-      #- "traefik.http.routers.metrics.tls.certresolver=le"
-      #- "traefik.http.routers.metrics.entrypoints=websecure"
-      #- "traefik.http.routers.metrics.rule=Host(`traefikmetrics.${HOSTNAME}`)"
-      #- "traefik.http.services.metrics.loadbalancer.server.port=8082"
 
   # Watchtower - docker image updater
   watchtower:
