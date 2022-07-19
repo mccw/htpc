@@ -112,8 +112,11 @@ services:
       - --certificatesresolvers.le.acme.dnschallenge.resolvers[1]=1.0.0.1:53
       - --log.level=ERROR
       - --log.filePath=/etc/traefik/traefik.log
-      - --serversTransport.insecureSkipVerify=true
-      - --pilot.token=892336b1-3723-44f5-83d4-f6d1c6773723
+#      - --experimental.hub=true
+#      - --hub.tls.insecure=true
+#      - --metrics.prometheus.addrouterslabels=true
+#      - --serversTransport.insecureSkipVerify=true
+#      - --pilot.token=892336b1-3723-44f5-83d4-f6d1c6773723
       - --accesslog.filepath=/etc/traefik/logs/access.log
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
