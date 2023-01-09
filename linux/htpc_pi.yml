@@ -95,6 +95,7 @@ services:
 
   # Sonarr – TV Show Download and Management
   sonarr:
+    #image: linuxserver/sonarr:3.0.8.1507-ls151
     image: linuxserver/sonarr:latest
     container_name: sonarr
     hostname: sonarr

@@ -22,8 +22,9 @@ services:
 
   # Heimdall - Application dashboard
   heimdall:
-    image: linuxserver/heimdall
-    init: true
+    # image: lscr.io/linuxserver/heimdall:2.4.12
+    image: lscr.io/linuxserver/heimdall:latest
+    init: false
     hostname: heimdall
     container_name: heimdall
     restart: unless-stopped
@@ -45,7 +46,7 @@ services:
   # Overseerr
   overseerr:
     image: linuxserver/overseerr
-    init: true
+    init: false
     hostname: overseerr
     container_name: overseerr
     restart: unless-stopped
@@ -112,11 +113,6 @@ services:
       - --certificatesresolvers.le.acme.dnschallenge.resolvers[1]=1.0.0.1:53
       - --log.level=ERROR
       - --log.filePath=/etc/traefik/traefik.log
-#      - --experimental.hub=true
-#      - --hub.tls.insecure=true
-#      - --metrics.prometheus.addrouterslabels=true
-#      - --serversTransport.insecureSkipVerify=true
-#      - --pilot.token=892336b1-3723-44f5-83d4-f6d1c6773723
       - --accesslog.filepath=/etc/traefik/logs/access.log
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
