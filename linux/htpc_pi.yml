@@ -4,7 +4,7 @@ services:
 
   # Lidarr - Music Manager
   lidarr:
-    image: ghcr.io/linuxserver/lidarr
+    image: linuxserver/lidarr
     hostname: lidarr
     container_name: lidarr
     restart: unless-stopped
@@ -25,9 +25,28 @@ services:
       - "traefik.http.routers.lidarr.entrypoints=websecure"
       - "traefik.http.services.lidarr.loadbalancer.server.port=8686"
 
+  # Plex - media server
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    hostname: plex
+    container_name: plex
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ${USBDIR}/docker/plex:/config
+      - ${USBDIR}/media/tv:/tv
+      - ${USBDIR}/media/movies:/movies
+      - ${DDIR}/music:/music
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - VERSION=docker
+      - PLEX_CLAIM=claim-xoUFjnqC381786pVB18S
+
   # Prowlarr - Index Manager
   prowlarr:
-    image: ghcr.io/linuxserver/prowlarr:develop
+    image: linuxserver/prowlarr
     hostname: prowlarr
     container_name: prowlarr
     restart: unless-stopped
@@ -49,7 +68,7 @@ services:
 
   # Radarr – Movie Download and Management
   radarr:
-    image: linuxserver/radarr:latest
+    image: linuxserver/radarr
     container_name: radarr
     hostname: radarr
     restart: unless-stopped
@@ -72,7 +91,7 @@ services:
 
   # SABnzbd - Binary News Reader
   sabnzbd:
-    image: linuxserver/sabnzbd:latest
+    image: linuxserver/sabnzbd
     container_name: sabnzbd
     hostname: sabnzbd
     restart: unless-stopped
@@ -95,8 +114,7 @@ services:
 
   # Sonarr – TV Show Download and Management
   sonarr:
-    #image: linuxserver/sonarr:3.0.8.1507-ls151
-    image: linuxserver/sonarr:latest
+    image: linuxserver/sonarr
     container_name: sonarr
     hostname: sonarr
     restart: unless-stopped

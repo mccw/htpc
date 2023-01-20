@@ -22,8 +22,7 @@ services:
 
   # Heimdall - Application dashboard
   heimdall:
-    # image: lscr.io/linuxserver/heimdall:2.4.12
-    image: lscr.io/linuxserver/heimdall:latest
+    image: linuxserver/heimdall
     init: false
     hostname: heimdall
     container_name: heimdall
