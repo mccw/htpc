@@ -10,7 +10,7 @@ services:
     restart: unless-stopped
     volumes:
       - ${USBDIR}/docker/lidarr:/config
-      - ${DDIR}/music:/music
+      - ${USBDIR}/media/music:/music
       - ${USBDIR}/downloads:/downloads
     environment:
       - PUID=${PUID}
@@ -36,7 +36,7 @@ services:
       - ${USBDIR}/docker/plex:/config
       - ${USBDIR}/media/tv:/tv
       - ${USBDIR}/media/movies:/movies
-      - ${DDIR}/music:/music
+      - ${USBDIR}/media/music:/music
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
